@@ -1,7 +1,7 @@
 import os
 import click
 from sqlalchemy import create_engine,text
-from sqlalchemy.orm import scoped_Session,sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 from flask import current_app,g
 from flask.cli import with_appcontext
 from dotenv import load_dotenv
@@ -11,12 +11,12 @@ load_dotenv()
 def get_db():
     if 'db' not in g:
         engine = create_engine(os.getenv("DATABASE_URL"))
-        db = scoped_Session(sessionmaker(bind=engine))
+        db = scoped_session(sessionmaker(bind=engine))
         g.db = db
     return g.db
 
 def close_db(e=None):
-    db = g.pop('db')
+    db = g.pop('db',None)
     if db is not None:
         db.close()
 
@@ -29,7 +29,7 @@ def init_db():
         db.execute(query)
         db.commit()
 
-@click.commad("build-db")
+@click.command("build-db")
 @with_appcontext
 def execute_command():
     init_db()
@@ -37,5 +37,5 @@ def execute_command():
 
 def init_app(app):
     app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+    app.cli.add_command(execute_command)
     
