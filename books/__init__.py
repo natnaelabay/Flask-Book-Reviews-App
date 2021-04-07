@@ -18,4 +18,7 @@ def create_app():
     def index():            
         return '<a class="button" href="/login">Google Login</a>'
 
+    from books.db import db
+    db.init_app(app)
+
     return app
