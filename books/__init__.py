@@ -13,12 +13,15 @@ def create_app():
     app.config["SESSION_PERMANENT"] = False
     app.config["SESSION_TYPE"] = "filesystem"
     Session(app)
+    print(app.url_map)
 
-    @app.route("/")
-    def index():            
-        return '<a class="button" href="/login">Google Login</a>'
+    # @app.route("/")
+    # def index():            
+    #     return '<a class="button" href="/login">Google Login</a>'
 
     from books.db import db
+    from books.main_app import index
     db.init_app(app)
-
+    app.register_blueprint(index.bp)
+    
     return app
