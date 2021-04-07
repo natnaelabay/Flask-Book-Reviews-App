@@ -2,3 +2,6 @@ Flask
 Flask-Session
 psycopg2-binary
 SQLAlchemy
+requests==2.21.0
+oauthlib==3.0.1
+pyOpenSSL==19.0.0
