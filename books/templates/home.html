@@ -2,7 +2,9 @@
 
 {% block title %} Homepage {% endblock %}
 
-
 {% block content %}
+<form action="{{ url_for('auth.logout')}}">
+    <input type="submit" value="logout">
+</form>
 <h1>This is home page</h1>
 {% endblock %}

@@ -1,0 +1,9 @@
+{% for error in get_flashed_messages() %}
+    <h2>{{error}}</h2>
+{% endfor %}
+
+<form action="/auth/login" method="post">
+    <input type="text" name="u_name" id="" placeholder="username">
+    <input type="password" name="password" id="" placeholder="password">
+    <input type="submit" value="login">
+</form>
