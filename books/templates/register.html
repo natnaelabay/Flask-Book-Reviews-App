@@ -4,11 +4,14 @@
 <a class="btn btn-danger">natnael</a>
 
 {% for error in get_flashed_messages()[0] %}
-    <div>
-        {{error}}
-    </div>
+<div>
+    {{error}}
+</div>
 {% endfor %}
-<form action="/auth/register" method="POST">
+<form action="/auth/register" method="POST" enctype="multipart/form-data">
+    <input type="file" name="img">
+    <br>
+
     <label for="f_name">f_name</label>
     <input type="text" name="f_name" required><br>
 
