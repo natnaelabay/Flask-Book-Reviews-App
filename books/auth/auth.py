@@ -1,6 +1,7 @@
 import functools
+import os
 from flask import (
-    Blueprint,flash,g,redirect,render_template,request,session,url_for,flash,json
+   current_app, Blueprint,flash,g,redirect,render_template,request,session,url_for,flash,json,send_file
 )
 from werkzeug.security import check_password_hash,generate_password_hash
 
@@ -28,7 +29,7 @@ def login():
                 return "empty"
             if check_password_hash(user["password"],password):
                 session.clear()
-                session["user_id"] = user["id"]
+                session["username"] = user["u_name"]
             return render_template("home.html")
         flash(error)
         return render_template("login.html")
@@ -101,16 +102,33 @@ def login_required(view):
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user_id')
+    username = session.get('username')
 
-    if user_id is None:
+    if username is None:
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
+            'SELECT * FROM users where u_name = :uname;', {"uname" : username}
         ).fetchone()
+        print("-----------g.user---------------")
+        print(g.user)
+        print("---------------g.user---------------")
 
 @bp.route('/')
 @login_required
 def check():
     return "just checking"
+
+#  file upload
+@bp.route('/up', methods=["POST","GET"])
+def upload():
+    if request.method == "POST":
+        img = request.files["img"]
+        print(img)
+        img.save(os.path.join(current_app.config["UPLOAD_FOLDER "],  img.filename))
+        return "yehe"
+    return render_template("upload.html")
+
+@bp.route('/send')
+def send():
+    return send_file(os.path.join(os.getenv("IMAGE_UPLOADS"), "a.PNG"))
