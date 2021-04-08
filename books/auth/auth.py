@@ -79,8 +79,8 @@ def register():
         db.commit()
 
         img = request.files["img"]
-        # print(img)
-        img.save(os.path.join(current_app.config["UPLOAD_FOLDER "],  img.filename))
+        if  img:
+            img.save(os.path.join(current_app.config["UPLOAD_FOLDER "], username + "." + img.filename.rsplit(".", 1)[1]))
 
         return redirect(url_for('auth.login'))
 
