@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS USERS;
 
 
 CREATE TABLE USERS (
-    id    SERIAL NOT NULL ,
+    id    SERIAL,
     f_name VARCHAR(30),
     l_name VARCHAR(30),
     u_name VARCHAR(15),
