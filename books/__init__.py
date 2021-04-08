@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask,session
+from flask import Flask,session,render_template
 from flask_session import Session
 
 
@@ -23,6 +23,11 @@ def create_app():
         # goal_dir = os.path.join(os.getcwd(), "../../my_dir")
         # print()
         return '<a class="button" href="/login">Google Login</a>'
+    
+    @app.errorhandler(404)
+    def page_not_found(e):
+        # note that we set the 404 status explicitly
+        return render_template("404.html")
 
     from books.db import db
     from books.main_app import index
