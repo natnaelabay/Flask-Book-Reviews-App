@@ -21,7 +21,9 @@ def create_app():
 
     from books.db import db
     from books.main_app import index
+    from books.auth import auth
     db.init_app(app)
+    app.register_blueprint(auth.bp)
     app.register_blueprint(index.bp)
     
     return app
