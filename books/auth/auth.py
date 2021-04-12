@@ -30,23 +30,26 @@ def login():
             if check_password_hash(user["password"],password):
                 session.clear()
                 session["username"] = user["u_name"]
-            return render_template("home.html")
+            return redirect(url_for('main.index'))
         flash(error)
-        return render_template("login.html")
+        # return render_template("login.html")
 
         
 
-    return render_template("login.html")
+    return redirect(url_for("main.index"))
+    # return render_template("login.html")
 
 @bp.route('/register',methods=["POST" , "GET"])
 def register():
     if request.method == "GET":
-        return render_template("register.html")
+        return redirect(url_for("main.index"))
     f_name = request.form.get('f_name')
     l_name = request.form.get('l_name')
     username = request.form.get('u_name')
     password = request.form.get('password')
     password_confirmation = request.form.get('password_confirm')
+    img = request.files.get("img")
+    # print(img)
     error = []
 
     if utils.num_there(f_name):
@@ -78,11 +81,12 @@ def register():
         )
         db.commit()
 
-        img = request.files["img"]
+        # img = request.files["img"]
         if  img:
             img.save(os.path.join(current_app.config["UPLOAD_FOLDER "], username + "." + img.filename.rsplit(".", 1)[1]))
 
-        return redirect(url_for('auth.login'))
+        # return redirect(url_for('auth.login'))
+        return "redirect(url_for('auth.login'))"
 
 
     flash(error)
