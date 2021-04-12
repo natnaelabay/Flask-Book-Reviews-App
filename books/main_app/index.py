@@ -10,7 +10,7 @@ bp = Blueprint("main", __name__)
 
 
 
-@bp.route("/home")
+@bp.route("/home/")
 @bp.route("/")
 def index():
     return render_template("home.html")
