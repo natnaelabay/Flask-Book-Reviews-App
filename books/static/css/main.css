@@ -4,8 +4,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap');
 body {
-    background-color: #353535;
     color: white;
+    background: #383535;
+    /* background: rgb(74, 37, 53);
+    background: linear-gradient(297deg, rgba(74, 37, 53, 1) 0%, rgba(122, 89, 89, 1) 100%); */
     font-family: 'Poppins', sans-serif;
 }
 
@@ -71,7 +73,7 @@ a:hover {
 
 .card-container {
     text-align: center;
-    width: 470px;
+    width: 450px;
     padding-top: .7rem;
     height: 10rem;
     background: #4B4B4B;
@@ -101,8 +103,11 @@ a:hover {
 
 .card-container {
     position: absolute;
-    right: -23rem;
-    top: 8rem;
+    top: 50%;
+    right: -100%;
+    transform: translateY(-50%);
+    /* right: -23rem; */
+    /* top: 8rem; */
 }
 
 .main-right {
@@ -122,10 +127,10 @@ a:hover {
     width: 5rem;
     border-radius: 50%;
     background-position: center;
-    /* background-attachment: cover; */
+    background-attachment: cover;
 }
 
-.main-right p {
+/* .main-right p {
     font-family: Poppins;
     font-style: normal;
     font-weight: normal;
@@ -141,12 +146,12 @@ a:hover {
     font-size: 31px;
     line-height: 46px;
     color: #FFFFFF;
-}
+} */
 
 .signup-input {
     box-shadow: none;
     outline: none;
-    width: 20rem;
+    /* width: 80%; */
     padding: .51rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 200;
@@ -198,16 +203,18 @@ a:hover {
     font-family: Poppins;
     font-style: normal;
     font-weight: 200;
-    font-size: 45px;
-    line-height: 67px;
+    width: 30rem;
+    font-size: 2rem;
+    /* line-height: 67px; */
 }
 
 .main-text span {
+    color: #01ffc0;
     font-family: Poppins;
     font-style: normal;
     font-weight: normal;
-    font-size: 45px;
-    line-height: 67px;
+    font-size: 2rem;
+    /* line-height: 67px; */
 }
 
 .relative-wrapper {
@@ -344,4 +351,58 @@ this is the break
 .modal-content {
     background: rgb(48, 47, 47);
     border: 1px solid red
+}
+
+.banner-text {
+    height: 100%;
+    text-align: center;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    /* vertical-align: middle; */
+}
+
+.banner-text img {
+    width: 100%;
+}
+
+.register p {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 31px;
+    line-height: 46px;
+    color: #00ff73;
+}
+
+.register p span {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 31px;
+    line-height: 46px;
+    color: #FFFFFF;
+}
+
+.register {
+    background: #292929;
+    border: 1px solid rgba(255, 0, 0, 0.726);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    /* padding/; */
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-sec {
+
+    background: #414141;
+    /* background: linear-gradient(297deg, rgba(74, 37, 53, 1) 0%, rgba(0, 0, 0, 1) 100%); */
+}
+h2 {
+    font-weight: 200;
+
 }

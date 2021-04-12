@@ -19,26 +19,29 @@
 
 <body>
 
+    <div class = "header sticky-top" >
+        <nav class="navbar sticky-top  container-fluid">
+            <!-- .heade -->
+            <div class="left nav-brand">
+                <p>Book<span class="logo-text">nest</span></p>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="ml-auto"></div>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">About us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                </li>
+    
+            </ul>
+        </nav>
+    </div>
 
-    <nav class="navbar header  container-fluid">
-        <div class="left nav-brand">
-            <p>Book<span class="logo-text">nest</span></p>
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="ml-auto"></div>
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">About us</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
-            </li>
-
-        </ul>
-    </nav>
 
     {% block content %}
 
