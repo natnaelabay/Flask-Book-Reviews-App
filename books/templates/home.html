@@ -17,10 +17,11 @@
         <div class="main-right mt-5 text-center" data-aos="zoom-out-up">
             <p class=" mt-3 text-center">Sign <span>up</span></p>
             <p class="text-center">
-                <img src="{{url_for('static', filename='images/ho.png')}}" height="50" width="50" alt="">
+                <img src="{{url_for('static', filename='images/ho.png')}}" id="profile-image" height="50" width="50"
+                    alt="">
             </p>
             <div>
-                <input type="file" accept="image/*" class="signup-input" name="file"> <br>
+                <input type="file" accept="image/*" class="signup-input" id="profile-upload" onchange="loadFile(event)" name="file"> <br>
             </div>
             <div>
                 <input type="text" class="mt-3 signup-input" id="f_name" placeholder="First name">
@@ -110,6 +111,13 @@
 <script>
     const elem = document.querySelector("#sign-up")
     const d = document.querySelector('#f_name')
+    const loadFile = function (event) {
+        var output = document.getElementById('profile-image');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
     elem.addEventListener("click", e => {
         d.focus()
     })
