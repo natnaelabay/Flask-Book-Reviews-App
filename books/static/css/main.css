@@ -108,13 +108,21 @@ a:hover {
 .main-right {
     /* width: 396px; */
     /* height: 533px; */
-    padding:1.5rem 2rem;
+    padding: 1.5rem 2rem;
     text-align: center;
     background: #292929;
     border: 1px solid rgba(255, 0, 0, 0.726);
     box-sizing: border-box;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
+}
+
+.avatar {
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+    background-position: center;
+    /* background-attachment: cover; */
 }
 
 .main-right p {
@@ -169,13 +177,14 @@ a:hover {
 
 .main-content {
     width: 100%;
-    position:relative;
+    position: relative;
     height: 431px;
     background: #515151;
 }
+
 .main-vertical-center {
     position: absolute;
-    top:50%;
+    top: 50%;
     width: 100%;
     transform: translateY(-50%);
 }
@@ -200,15 +209,15 @@ a:hover {
     font-size: 45px;
     line-height: 67px;
 }
-.relative-wrapper{
+
+.relative-wrapper {
     position: relative;
 }
 
 .m-middle {
-    
     background: #AFAFAF;
     border-radius: 3px;
-    height:70%;
+    height: 70%;
     width: 3px;
     background-color: red;
     position: absolute;
@@ -222,7 +231,7 @@ a:hover {
 }
 
 footer {
-    padding:1rem;
+    padding: 1rem;
     font-family: Poppins;
     font-weight: 200;
 }
@@ -232,11 +241,9 @@ footer {
 this is the break
 */
 
-
-
 .main-login {
     width: 396px;
-    padding:2rem;
+    padding: 2rem;
     text-align: center;
     background: #292929;
     border: 1px solid #616161;
@@ -293,43 +300,47 @@ this is the break
     color: white;
 }
 
-
-
-
-
-
 .container {
     padding: 2rem 0rem;
 }
+
 @media (min-width: 576px) {
     .modal-dialog {
         max-width: 400px;
-   }
+    }
     .modal-dialog .modal-content {
         padding: 1rem;
-   }
+    }
 }
+
 .modal-header .close {
     margin-top: -1.5rem;
 }
+
 .form-title {
     margin: -2rem 0rem 2rem;
 }
+
 .btn-round {
     border-radius: 3rem;
 }
+
 .delimiter {
     padding: 1rem;
 }
+
 .social-buttons .btn {
     margin: 0 0.5rem 1rem;
 }
+
 .signup-section {
     padding: 0.3rem 0rem;
 }
+
 .modal {
     background: rgba(0, 0, 0, 0.349);
 }
+
 .modal-content {
     background: rgb(48, 47, 47);
     border: 1px solid red
