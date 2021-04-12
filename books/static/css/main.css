@@ -106,8 +106,9 @@ a:hover {
 }
 
 .main-right {
-    width: 396px;
-    height: 533px;
+    /* width: 396px; */
+    /* height: 533px; */
+    padding:1.5rem 2rem;
     text-align: center;
     background: #292929;
     border: 1px solid rgba(255, 0, 0, 0.726);
