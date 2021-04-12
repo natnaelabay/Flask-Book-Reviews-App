@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask,session,render_template
+from flask import Flask,session,render_template,send_from_directory
 from flask_session import Session
 
 
@@ -28,6 +28,13 @@ def create_app():
     def page_not_found(e):
         # note that we set the 404 status explicitly
         return render_template("404.html")
+    
+
+
+    # this is for serving files
+    @app.route("/static/<path:path>")
+    def static_dir(path):
+        return send_from_directory("static", path)
 
     from books.db import db
     from books.main_app import index
