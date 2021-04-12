@@ -2,6 +2,334 @@
     @author Natnael Abay ATR/8016/11
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap');
 body {
-    background:red ;
+    background-color: #353535;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+.header {
+    background: #3f3f3f;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    /* position:absolute; */
+    /* width:100%; */
+}
+
+.nav-header {
+    padding: 1rem 4rem;
+    justify-content: space-between;
+}
+
+.left {
+    margin-bottom: 1rem;
+    height: 2rem;
+}
+
+.right {
+    height: 2rem;
+}
+
+.left p {
+    font-weight: 100;
+}
+
+.logo-text {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 2rem;
+    color: #E1E1E1;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-weight: 300;
+}
+
+ul {
+    display: flex;
+}
+
+ul li {
+    margin-left: 1rem;
+    list-style: none;
+    display: inline-block;
+}
+
+a:hover {
+    color: white;
+    text-decoration: underline white;
+}
+
+.main-wrapper {
+    padding: 1rem 8rem;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-container {
+    text-align: center;
+    width: 470px;
+    padding-top: .7rem;
+    height: 10rem;
+    background: #4B4B4B;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 13px;
+}
+
+.card-word {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 2rem;
+    color: #FFFFFF;
+}
+
+.card-container p {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 100;
+    font-size: 1.8rem;
+    color: #acacac;
+}
+
+.main-left {
+    position: relative;
+}
+
+.card-container {
+    position: absolute;
+    right: -23rem;
+    top: 8rem;
+}
+
+.main-right {
+    width: 396px;
+    height: 533px;
+    text-align: center;
+    background: #292929;
+    border: 1px solid rgba(255, 0, 0, 0.726);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.main-right p {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 31px;
+    line-height: 46px;
+    color: #FF0000;
+}
+
+.main-right p span {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 31px;
+    line-height: 46px;
+    color: #FFFFFF;
+}
+
+.signup-input {
+    box-shadow: none;
+    outline: none;
+    width: 20rem;
+    padding: .51rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 200;
+    color: white;
+    border: none;
+    background: #5E5D5D;
+    border-radius: 3px;
+}
+
+.signup-input::placeholder {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 12px;
+    line-height: 18px;
+    color: #CBCBCB;
+}
+
+.submit-btn {
+    width: 20rem;
+    background: #000000;
+    border: 1px solid #494949;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: .5rem;
+    color: white;
+}
+
+.main-content {
+    width: 100%;
+    position:relative;
+    height: 431px;
+    background: #515151;
+}
+.main-vertical-center {
+    position: absolute;
+    top:50%;
+    width: 100%;
+    transform: translateY(-50%);
+}
+
+.m-left {
+    width: 415px;
+    height: 223px;
+}
+
+.main-text {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 45px;
+    line-height: 67px;
+}
+
+.main-text span {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 45px;
+    line-height: 67px;
+}
+.relative-wrapper{
+    position: relative;
+}
+
+.m-middle {
+    
+    background: #AFAFAF;
+    border-radius: 3px;
+    height:70%;
+    width: 3px;
+    background-color: red;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.m-left {
+    margin: 5rem 0;
+}
+
+footer {
+    padding:1rem;
+    font-family: Poppins;
+    font-weight: 200;
+}
+
+/* 
+
+this is the break
+*/
+
+
+
+.main-login {
+    width: 396px;
+    padding:2rem;
+    text-align: center;
+    background: #292929;
+    border: 1px solid #616161;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.main-login p {
+    font-family: Poppins, "sans-serif";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 31px;
+    line-height: 46px;
+    color: #FF0000;
+}
+
+.main-login p span {
+    font-family: Poppins, "sans-serif";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 31px;
+    line-height: 46px;
+    color: #FFFFFF;
+}
+
+.signup-input {
+    box-shadow: none;
+    outline: none;
+    width: 20rem;
+    padding: .51rem;
+    color: white;
+    border: none;
+    background: #5E5D5D;
+    border-radius: 3px;
+}
+
+.signup-input::placeholder {
+    font-family: Poppins, "sans-serif";
+    font-style: normal;
+    font-weight: 200;
+    font-size: 12px;
+    line-height: 18px;
+    color: #CBCBCB;
+}
+
+.submit-btn {
+    width: 20rem;
+    background: #000000;
+    border: 1px solid #494949;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: .5rem;
+    color: white;
+}
+
+
+
+
+
+
+.container {
+    padding: 2rem 0rem;
+}
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 400px;
+   }
+    .modal-dialog .modal-content {
+        padding: 1rem;
+   }
+}
+.modal-header .close {
+    margin-top: -1.5rem;
+}
+.form-title {
+    margin: -2rem 0rem 2rem;
+}
+.btn-round {
+    border-radius: 3rem;
+}
+.delimiter {
+    padding: 1rem;
+}
+.social-buttons .btn {
+    margin: 0 0.5rem 1rem;
+}
+.signup-section {
+    padding: 0.3rem 0rem;
+}
+.modal {
+    background: rgba(0, 0, 0, 0.349);
+}
+.modal-content {
+    background: rgb(48, 47, 47);
+    border: 1px solid red
 }
