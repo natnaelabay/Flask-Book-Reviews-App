@@ -11,7 +11,7 @@ from books.utlis import utils
 bp = Blueprint('auth' , __name__, url_prefix="/auth")
 
 
-@bp.route('/login', methods=[ "POST"])
+@bp.route('/login', methods=[ "POST" , "GET"])
 def login():
     if request.method == "POST":
         username=request.form.get('u_name')
@@ -28,27 +28,34 @@ def login():
             if len(error["errors"]) == 0:
                 user = db.execute("SELECT * FROM users where u_name = :uname;" , {"uname" : username}).fetchone()
                 if not user:
-                    error["errors"].append("user not found")
+                    error["errors"].append("username or password not correct!")
                     error["success"] = False
                     return jsonify(error)
                 if check_password_hash(user["password"],password):
-                    img_url = user['profile_url'].split('\\')[3]
-                    img_ext =img_url[img_url.index(".")+ 1 :]
+                    if user["profile_url"] is not None:
+                        img_url = user['profile_url'].split('\\')[3]
+                        img_ext =img_url[img_url.index(".")+ 1 :]
+                        session["profile_url"] = url_for("static" , filename = f"images/{user['u_name'] + '.' + img_ext}")
                     session.clear()
                     session["username"] = user["u_name"]
                     session["name"] = user["f_name"] + " " + user["l_name"]
-                    session["profile_url"] = url_for("static" , filename = f"images/{user['u_name'] + '.' + img_ext}")
-                    error["success"] = True
-                    error["message"] = "Successfully Logedin"
-                    return session["profile_url"]
-                error["success"] = True
+                    message = {}
+                    message["success"] = True
+                    message["message"] = "Successfully Logedin"
+                    # return session["profile_url"]
+                    return jsonify(message)
+                error["success"] = False
+                error["errors"].append("username or password incorrect!")
+                return jsonify(error)
+            else:
+                error["success"] = False
+                error["errors"].append("username or password incorrect!")
                 return jsonify(error)
         except :
             error["errors"].append("internal Error")
             error["success"] = False
             return jsonify(error)
-
-    return request.method
+    return redirect(url_for("main.index"))
 
 @bp.route('/register',methods=["POST" , "GET"])
 def register():
@@ -151,7 +158,6 @@ def login_required(view):
 @bp.before_app_request
 def load_logged_in_user():
     username = session.get('username')
-
     if username is None:
         g.user = None
     else:
