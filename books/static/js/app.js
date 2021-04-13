@@ -15,16 +15,64 @@ let password_confirm = document.querySelector("#password_confirm");
 let registerForm = document.querySelector("#register-form");
 let spinner_submit = document.querySelector("#r-spinner");
 let r_submit = document.querySelector("#registered-submit");
+
 // ! logging in
 const loginForm = document.querySelector("#login-form");
+let log_username = document.querySelector("#login-username");
+let log_password = document.querySelector("#login-password");
+let login_error = document.querySelector(".login-error");
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  login_error.innerHTML = ""
+  if (log_password.value.length == 0 || log_username.value.length == 0) {
+    login_error.innerHTML = `
+        <div class="alert mx-2 h-25  alert-success" role="alert">
+           Some of the Inputs are empty
+        </div>
+        `;
+    console.log("in here");
+  } else {
+    const options = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
 
-// let registerForm = document.querySelector("#register-form")
+    const formData = new FormData()
+    formData.append("u_name", log_username.value);
+    formData.append("password", log_password.value);
+    
+
+    axios
+      .post("/auth/login", formData, options)
+      .then((res) => {
+        r = res.data
+        if(r.success) {
+            window.location.href = "/profile"
+        } else {
+            login_error.innerHTML = ""
+            for (err of r.errors) {
+                login_error += `
+                <div class="alert mx-2 h-25  alert-success" role="alert">
+                    ${err}
+                </div>
+                `
+            }
+            console.log(r.errors);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+});
+
 registerForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData();
   console.log(spinner_submit.classList);
   spinner_submit.classList.remove("d-none");
-  r_submit.disabled = true
+  r_submit.disabled = true;
   if (
     f_name.value.length == 0 ||
     l_name.value.length == 0 ||
@@ -77,16 +125,10 @@ registerForm.addEventListener("submit", (e) => {
       });
     //   <!-- console.log(formData.getAll()) -->
   }
-  r_submit.disabled = false
+  r_submit.disabled = false;
   spinner_submit.classList.add("d-none");
-
 });
 
-loginForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  console.log("submitted");
-});
 const loadFile = function (event) {
   var output = document.getElementById("profile-image");
   output.src = URL.createObjectURL(event.target.files[0]);

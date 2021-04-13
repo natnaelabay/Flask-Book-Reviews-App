@@ -4,11 +4,8 @@ from flask import (
 from werkzeug.security import check_password_hash , generate_password_hash
 from books.db.db import get_db
 from books.utlis.utils import build_sql
+from books.auth.auth import login_required
 bp = Blueprint("main", __name__)
- 
-
-
-
 
 @bp.route("/home/")
 @bp.route("/")
@@ -54,3 +51,9 @@ def book(isbn):
     db = get_db()
     book = db.execute("SELECT * FROM BOOKS WHERE isbn = :isbn;" , {"isbn" : isbn}).fetchone()
     return render_template("book.html" , data=[x for x in book])
+
+
+@bp.route("/profile")
+@login_required
+def reviews():
+    return "there was an error"
