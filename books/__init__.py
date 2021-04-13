@@ -13,7 +13,7 @@ def create_app():
     app.config["SESSION_PERMANENT"] = False
     app.config["SESSION_TYPE"] = "filesystem"
     app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
-    app.config["UPLOAD_FOLDER "] = os.path.join(os.getcwd() ,os.path.join('books' , os.path.join('static' , 'images')))
+    app.config["UPLOAD_FOLDER "] = os.path.join('books' , os.path.join('static' , 'images'))
 
     Session(app)
     print(app.url_map)
@@ -32,9 +32,9 @@ def create_app():
 
 
     # this is for serving files
-    @app.route("/static/<path:path>")
-    def static_dir(path):
-        return send_from_directory("static", path)
+    # @app.route("/static/<path:path>")
+    # def static_dir(path):
+    #     return send_from_directory("static", path)
 
     from books.db import db
     from books.main_app import index
