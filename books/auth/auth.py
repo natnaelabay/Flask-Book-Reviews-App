@@ -1,7 +1,7 @@
 import functools
 import os
 from flask import (
-   current_app, Blueprint,flash,g,redirect,render_template,request,session,url_for,flash,json,send_file
+   current_app, Blueprint,flash,g,redirect,render_template,request,session,url_for,flash,json,send_file, jsonify
 )
 from werkzeug.security import check_password_hash,generate_password_hash
 
@@ -11,33 +11,44 @@ from books.utlis import utils
 bp = Blueprint('auth' , __name__, url_prefix="/auth")
 
 
-@bp.route('/login', methods=["GET" , "POST"])
+@bp.route('/login', methods=[ "POST"])
 def login():
     if request.method == "POST":
         username=request.form.get('u_name')
         password=request.form.get("password")
-        db = get_db()
-        error = []
-        if username is None:
-            error.append("username is required")
+        error = {"errors" : []} 
+        if username is None or len(username) == 0:
+            error["errors"].append("username is required")
         elif password is None:
-            error.append("password is required")
-        
-        if len(error) == 0:
-            user = db.execute("SELECT * FROM users where u_name = :uname;" , {"uname" : username}).fetchone()
-            if not user:
-                return "empty"
-            if check_password_hash(user["password"],password):
-                session.clear()
-                session["username"] = user["u_name"]
-            return redirect(url_for('main.index'))
-        flash(error)
-        # return render_template("login.html")
+            error["errors"].append("password is required")
+        elif len(password) < 6:
+            error["errors"].append("password is to short")
+        try:
+            db = get_db()
+            if len(error["errors"]) == 0:
+                user = db.execute("SELECT * FROM users where u_name = :uname;" , {"uname" : username}).fetchone()
+                if not user:
+                    error["errors"].append("user not found")
+                    error["success"] = False
+                    return jsonify(error)
+                if check_password_hash(user["password"],password):
+                    img_url = user['profile_url'].split('\\')[3]
+                    img_ext =img_url[img_url.index(".")+ 1 :]
+                    session.clear()
+                    session["username"] = user["u_name"]
+                    session["name"] = user["f_name"] + " " + user["l_name"]
+                    session["profile_url"] = url_for("static" , filename = f"images/{user['u_name'] + '.' + img_ext}")
+                    error["success"] = True
+                    error["message"] = "Successfully Logedin"
+                    return session["profile_url"]
+                error["success"] = True
+                return jsonify(error)
+        except :
+            error["errors"].append("internal Error")
+            error["success"] = False
+            return jsonify(error)
 
-        
-
-    return redirect(url_for("main.index"))
-    # return render_template("login.html")
+    return request.method
 
 @bp.route('/register',methods=["POST" , "GET"])
 def register():
@@ -48,49 +59,76 @@ def register():
     username = request.form.get('u_name')
     password = request.form.get('password')
     password_confirmation = request.form.get('password_confirm')
-    img = request.files.get("img")
-    # print(img)
-    error = []
-
-    if utils.num_there(f_name):
-        error.append('Invalid character in name')
+    # img = request.files.get("img")
+    error = {"errors":[]}
+    inputs = [f_name , l_name, username, password, password_confirmation]
+    values = ["first name" , "last name", "username","password", "password_confirmation"]
+    if None in inputs:
+        for a in range(len(inputs)):
+            if inputs[a] is None:
+                error["errors"].append(f"{values[a]} can not be empty")
+    else:
         if len(f_name) == 0:
-            error.append("name can not be empty")
-    if utils.num_there(l_name):
-        error.append('Invalid character in name')
+            error["errors"].append("name can not be empty")
+            if utils.num_there(f_name):
+                error["errors"].append('Invalid character in name')
         if len(l_name) == 0:
-            error.append("name can not be empty")
-    if len(username) == 0:
-        error.append("username can not be empty")
+            error["errors"].append("name can not be empty")
+            if utils.num_there(l_name):
+                error["errors"].append('Invalid character in name')
+        if len(username) == 0:
+            error["errors"].append("username can not be empty")
+        if len(password) < 6:
+            error["errors"].append("password length too short")
+        if  len(password_confirmation) < 6:
+            error["errors"].append("password confirmation too short and mismatch")
+        if password != password_confirmation:
+            error["errors"].append('password mismatch')
+        if len(error["errors"]) == 0:
+            try:
+                db = get_db()
+                res = db.execute("SELECT COUNT(*) FROM USERS WHERE u_name = :u_name" , {"u_name" : username}).fetchone()
+                count =[x for x in res]
+                if count[0] == 0:
+                    img = request.files.get("img")
+                    if  img:
+                        file_path_name = os.path.join(current_app.config["UPLOAD_FOLDER "], username + "." + img.filename.rsplit(".", 1)[1])
+                        img.save(file_path_name)
+                        db.execute(
+                            "INSERT INTO USERS(f_name,l_name,u_name,password, profile_url) VALUES( :f_name,:l_name,:u_name,:password, :profile_url )" , {
+                                "f_name" :f_name,
+                                "l_name": l_name,
+                                "u_name" : username,
+                                "password": generate_password_hash(password),
+                                "profile_url" : file_path_name
+                            }
+                        )
+                        db.commit()
+                    else:
+                        db.execute(
+                            "INSERT INTO USERS(f_name,l_name,u_name,password) VALUES( :f_name,:l_name,:u_name,:password )" , {
+                                "f_name" :f_name,
+                                "l_name": l_name,
+                                "u_name" : username,
+                                "password": generate_password_hash(password),
+                            }
+                        )
+                        db.commit()
+                    error["success"] = True
+                    return jsonify({ "message" : "user created successfully!" } )
+                else:
+                    error["errors"].append("The username is already taken")
+                    error["success"] = False
+                    return jsonify(error)
+            except :
+                error["errors"].append("Something went wrong in the server! ")
+                error["success"] = False
+                return jsonify(error)
+        else:
+            error["success"] = False
+            return jsonify(error)
 
-    if len(password) < 6:
-        error.append('Password is too short')
-    # return { "pass" : password , "p" : password_confirmation}
-    if password != password_confirmation:
-        error.append('password mismatch')
-
-    if len(error) == 0:
-        db = get_db()
-        db.execute(
-            "INSERT INTO USERS(f_name,l_name,u_name,password) VALUES( :f_name,:l_name,:u_name,:password )" , {
-                "f_name" :f_name,
-                "l_name": l_name,
-                "u_name" : username,
-                "password": generate_password_hash(password)
-            }
-        )
-        db.commit()
-
-        # img = request.files["img"]
-        if  img:
-            img.save(os.path.join(current_app.config["UPLOAD_FOLDER "], username + "." + img.filename.rsplit(".", 1)[1]))
-
-        # return redirect(url_for('auth.login'))
-        return "redirect(url_for('auth.login'))"
-
-
-    flash(error)
-    return render_template("register.html")
+    return jsonify(error)
     
 @bp.route('/logout')
 def logout():
