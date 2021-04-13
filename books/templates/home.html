@@ -21,8 +21,11 @@
                         <p class=" mt-3 text-center">Sign <span>up</span></p>
                         <p class="text-center">
                             <img src="{{url_for('static', filename='images/ho.png')}}" id="profile-image" class="avatar"
-                                alt="">
+                            alt="">
                         </p>
+                        <div class="errors">
+                            
+                        </div>
                         <div>
                             <input type="file" accept="image/*" class="signup-input" id="profile-upload"
                                 onchange="loadFile(event)" name="file"> <br>
@@ -125,61 +128,9 @@
     </div>
 </div>
 
-<script>
-    const elem = document.querySelector("#sign-up")
-    // const d = document.querySelector('#f_name')
-    let f_name = document.querySelector("#f_name")
-    let l_name = document.querySelector("#l_name")
-    let u_name = document.querySelector("#u_name")
-    let password = document.querySelector("#password")
-    let file = document.querySelector("#profile-upload")
-    let password_confirm = document.querySelector("#password_confirm")
-    let registerForm = document.querySelector("#register-form")
-    registerForm.addEventListener("submit", e => {
-        e.preventDefault()
-        const formData = new FormData()
-        console.log(f_name)
 
-        // file = file.files
-        console.log(file)
 
-        if (f_name.value.length == 0 || l_name.value.length == 0 || u_name.value.length == 0 || password.value.length == 0 || password_confirm.value.length == 0) {
-            console.log("empty values present")
-        } else {
-            formData.append("f_name", f_name.value)
-            formData.append("l_name", l_name.value)
-            formData.append("u_name", u_name.value)
-            formData.append("password", password.value)
-            formData.append("img", file.files[0])
-            formData.append("password_confirm", password_confirm.value)
-            axios({
-                method: "post",
-                url: "auth/register",
-                data: formData,
-                headers: { "Content-Type": "multipart/form-data" },
-            })
-                .then(function (response) {
-                    //handle success
-                    console.log(response);
-                })
-                .catch(function (response) {
-                    //handle error
-                    console.log(response);
-                });
-            //   <!-- console.log(formData.getAll()) -->
-        }
-    })
-    const loadFile = function (event) {
-        var output = document.getElementById('profile-image');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function () {
-            URL.revokeObjectURL(output.src) // free memory
-        }
-    };
-    elem.addEventListener("click", e => {
-        d.focus()
-    })
-        // this is to click the button
-        // document.querySelectorAll(".nav-link")[1].click()
-</script>
+
+<script src="{{ url_for('static' , filename='js/app.js') }}"></script>
+
 {% endblock %}

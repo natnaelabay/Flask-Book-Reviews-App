@@ -68,14 +68,14 @@ def register():
             if inputs[a] is None:
                 error["errors"].append(f"{values[a]} can not be empty")
     else:
+        if utils.num_there(f_name):
+                error["errors"].append('Invalid character in first name')
         if len(f_name) == 0:
             error["errors"].append("name can not be empty")
-            if utils.num_there(f_name):
-                error["errors"].append('Invalid character in name')
         if len(l_name) == 0:
             error["errors"].append("name can not be empty")
-            if utils.num_there(l_name):
-                error["errors"].append('Invalid character in name')
+        if utils.num_there(l_name):
+            error["errors"].append('Invalid character in last name')
         if len(username) == 0:
             error["errors"].append("username can not be empty")
         if len(password) < 6:
@@ -114,8 +114,10 @@ def register():
                             }
                         )
                         db.commit()
-                    error["success"] = True
-                    return jsonify({ "message" : "user created successfully!" } )
+                    message = {}
+                    message["success"] = True
+                    message["message"] =   "user created successfully!"
+                    return jsonify( message)
                 else:
                     error["errors"].append("The username is already taken")
                     error["success"] = False

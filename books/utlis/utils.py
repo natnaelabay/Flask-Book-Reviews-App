@@ -3,3 +3,6 @@ def num_there(s):
         if not i.isalpha():
             return True
     return False
+
+def build_sql(query, a):
+    return "data"
