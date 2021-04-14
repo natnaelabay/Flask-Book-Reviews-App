@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %} Profile {% endblock %}
+{% block head %}
+{{ super() }}
+
+<link rel="stylesheet" href="{{ url_for('static' , filename='css/profile.css') }}">
+
+{% endblock %}
+
+{% block profile %}
+<ul class="nav justify-content-end">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Natnael Abay</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Logout</a>
+    </li>
+
+</ul>
+{% endblock %}
+
+
+{% block content %}
+<h1 style = "text-transform: capitalize;">{{ session.name }}</h1>
+
+{% if session.profile_url %}
+    <img src="{{ session.profile_url }}" alt="">
+{% else %}
+<h1 style = "text-transform: capitalize;">No Profile image</h1>
+{% endif  %}
+
+<div class="container mb-n4">
+    <h1 style="font-family: Poppins; font-weight: 200;">
+        Recommendation:
+    </h1>
+</div>
+<div class="container d-flex justify-content-around">
+    <div class="r-card">
+        <h1>Fikr Eske Enklf</h1>
+        <p class="">By. Natnael Abay</p>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="float-right">1984</span>
+    </div>
+    <div class="r-card">
+        <h1>Fikr Eske Enklf</h1>
+        <p class="">By. Natnael Abay</p>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="float-right">1984</span>
+    </div>
+    <div class="r-card">
+        <h1>Fikr Eske Enklf</h1>
+        <p class="">By. Natnael Abay</p>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="float-right">1984</span>
+    </div>
+</div>
+
+<div class="container">
+    <h1 style="font-family: Poppins; font-weight: 200;">
+        Search Your Book Of Choice
+    </h1>
+</div>
+<section class="search container">
+    <form  id="search-form">
+        <i class="fas fa-search"></i>
+        <input type="text" name="payload" class="" placeholder="Search" id="payload">
+        <input list="browsers" class="ml-4" name="type" id = "search-type"  placeholder="Select">
+        <datalist id="browsers">
+            <option value="ISBN">
+            <option value="Author">
+            <option value="Title">
+            <option value="Year">
+        </datalist>
+        <input type="submit" value="Search" class="ml-4 search-btn">
+    </form>
+</section>
+
+
+<div class="container">
+    <div class="search-box" style="position: relative;">
+        <div class="left">
+            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
+        </div>
+        <div class="middle">
+            <p>Lord of the rings</p>
+        </div>
+
+        <div class="right">
+            <p>By. <span>Natnael Abay</span></p>
+        </div>
+    </div>
+    <div class="search-box mt-4" style="position: relative;">
+        <div class="left">
+            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
+        </div>
+        <div class="middle">
+            <p>Lord of the rings</p>
+        </div>
+
+        <div class="right">
+            <p>By. <span>Natnael Abay</span></p>
+        </div>
+    </div>
+    <div class="search-box mt-4" style="position: relative;">
+        <div class="left">
+            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
+        </div>
+        <div class="middle">
+            <p>Lord of the rings</p>
+        </div>
+
+        <div class="right">
+            <p>By. <span>Natnael Abay</span></p>
+        </div>
+    </div>
+    <div class="search-box mt-4" style="position: relative;">
+        <div class="left">
+            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
+        </div>
+        <div class="middle">
+            <p>Lord of the rings</p>
+        </div>
+
+        <div class="right">
+            <p>By. <span>Natnael Abay</span></p>
+        </div>
+    </div>
+    <div class="search-box mt-4" style="position: relative;">
+        <div class="left">
+            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
+        </div>
+        <div class="middle">
+            <p>Lord of the rings</p>
+        </div>
+
+        <div class="right">
+            <p>By. <span>Natnael Abay</span></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="{{ url_for('static' , filename='js/profile.js')  }}"></script>
+
+{% endblock %}
