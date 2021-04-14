@@ -43,6 +43,8 @@ def login():
                     message["success"] = True
                     message["message"] = "Successfully Logedin"
                     # return session["profile_url"]
+                    return redirect((url_for("profile")))
+                    #  redirect to the profile page
                     return jsonify(message)
                 error["success"] = False
                 error["errors"].append("username or password incorrect!")
@@ -154,6 +156,14 @@ def login_required(view):
 		return view(**kwargs)
 	return wrapped_view
 
+def redirect_if_logged_in(view):
+	@functools.wraps(view)
+	def wrapped_view(**kwargs):
+		if g.user is not None:
+			return redirect(url_for("main.profile"))
+		return view(**kwargs)
+	return wrapped_view
+
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -164,6 +174,7 @@ def load_logged_in_user():
         g.user = get_db().execute(
             'SELECT * FROM users where u_name = :uname;', {"uname" : username}
         ).fetchone()
+
         print("-----------g.user---------------")
         print(g.user)
         print("---------------g.user---------------")
