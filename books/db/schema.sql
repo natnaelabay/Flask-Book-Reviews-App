@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS USERS; 
+DROP TABLE IF EXISTS BOOKS; 
 
 
 CREATE TABLE USERS (
@@ -9,4 +10,13 @@ CREATE TABLE USERS (
     password VARCHAR(255),
     profile_url VARCHAR(255),
     PRIMARY KEY(id) 
-)
+);
+
+CREATE TABLE BOOKS (
+    id    SERIAL,
+    ISBN VARCHAR(17),
+    TITLE VARCHAR(250),
+    author VARCHAR(250),
+    year smallint,
+    PRIMARY KEY(id) 
+);
