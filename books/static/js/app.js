@@ -50,13 +50,13 @@ loginForm.addEventListener("submit", (e) => {
         if(r.success) {
             window.location.href = "/profile"
         } else {
-            login_error.innerHTML = ""
             for (err of r.errors) {
-                login_error += `
+                login_error.innerHTML += `
                 <div class="alert mx-2 h-25  alert-success" role="alert">
-                    ${err}
+                ${err}
                 </div>
                 `
+                console.log("Adding error");
             }
             console.log(r.errors);
         }
