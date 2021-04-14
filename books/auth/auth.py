@@ -32,18 +32,18 @@ def login():
                     error["success"] = False
                     return jsonify(error)
                 if check_password_hash(user["password"],password):
+                    session.clear()
                     if user["profile_url"] is not None:
                         img_url = user['profile_url'].split('\\')[3]
                         img_ext =img_url[img_url.index(".")+ 1 :]
                         session["profile_url"] = url_for("static" , filename = f"images/{user['u_name'] + '.' + img_ext}")
-                    session.clear()
                     session["username"] = user["u_name"]
                     session["name"] = user["f_name"] + " " + user["l_name"]
                     message = {}
                     message["success"] = True
                     message["message"] = "Successfully Logedin"
                     # return session["profile_url"]
-                    return redirect((url_for("profile")))
+                    # return redirect((url_for("profile")))
                     #  redirect to the profile page
                     return jsonify(message)
                 error["success"] = False
@@ -159,7 +159,7 @@ def login_required(view):
 def redirect_if_logged_in(view):
 	@functools.wraps(view)
 	def wrapped_view(**kwargs):
-		if g.user is not None:
+		if g.user is not  None:
 			return redirect(url_for("main.profile"))
 		return view(**kwargs)
 	return wrapped_view
