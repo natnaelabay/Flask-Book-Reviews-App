@@ -144,7 +144,7 @@ def register():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return render_template("login.html")
+    return redirect(url_for("main.index"))
     # return redirect(url_for('index'))
 
 
