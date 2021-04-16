@@ -59,7 +59,34 @@ def book(isbn):
 def profile():
     return render_template("profile.html")
 
+@bp.route('/book-review/<book_id>')
+def getbookpage(book_id):
+    db = get_db()
+    reviews = db.execute("SELECT * FROM USERS INNER JOIN REVIEWS ON  REVIEWS.book_id = :book_id", {"book_id" : book_id}).fetchall()
+    return jsonify([x for x in reviews] )
 
-# @bp.route("/a")
-# def profile():
-#     return render_template("profile.html")
+@bp.route("/rate" , methods=["POST"])
+@login_required
+def submit_rate():
+    rating_count = request.form.get("rating_count")
+    rating_text = request.form.get("rating_text")
+    book_id = 1
+    usr_id = 1
+    if (rating_count and rating_text and book_id and usr_id):
+        db = get_db()
+        db.execute(
+            "INSERT INTO REVIEWS( book_id, usr_id, rate_count, rate_desc) VALUES(:book_id, :usr_id, :rate_count, :rate_desc);"
+            ,{
+                "book_id" : book_id,
+                "usr_id" : usr_id,
+                "rate_count" : rating_count,
+                "rate_desc" : rating_text
+            })
+        db.commit()
+        return jsonify("success")
+    else:
+        return "something happened"
+
+@bp.route("/a")
+def a():
+    return render_template("book.html")
