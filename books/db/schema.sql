@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS USERS; 
 DROP TABLE IF EXISTS BOOKS; 
+DROP TABLE IF EXISTS REVIEWS; 
 
 
 CREATE TABLE USERS (
@@ -19,4 +20,15 @@ CREATE TABLE BOOKS (
     author VARCHAR(250),
     year smallint,
     PRIMARY KEY(id) 
+);
+
+
+CREATE TABLE REVIEWS(
+    rating_id SERIAL,
+    book_id BIGINT ,
+    usr_id BIGINT ,
+    rate_count BIGINT ,
+    rate_desc VARCHAR(255),
+    FOREIGN KEY(book_id) REFERENCES BOOKS(id),
+    FOREIGN KEY(usr_id) REFERENCES USERS(id)
 );
