@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %} Book {% endblock %}
+
+{% block head %}
+
+{{ super() }}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+    integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+
+{% endblock %}
+
+
+{% block content %}
+<style>
+    body {
+        font-size: 1.5rem;
+        background: rgb(59, 59, 59);
+    }
+
+    .rating-wrapper {
+        color: white;
+    }
+
+    .rating-showcase {
+        color: white;
+    }
+
+    .fa-star {
+        color: white;
+    }
+
+    .rating-wrapper:hover {
+        cursor: pointer;
+    }
+
+    .rating-showcase:hover {
+        cursor: pointer;
+    }
+
+    .bg-red {
+        color: red;
+    }
+
+    img {
+        height: 6rem;
+    }
+
+    .contact {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .r-card {
+        position: relative;
+        width: 90%;
+        margin-top: 5rem;
+        padding: 1rem 1.8rem;
+        border-radius: .3rem;
+        color: white;
+        background-color: #5A5A5A;
+    }
+
+    .r-card p {
+        font-size: 1.3rem;
+    }
+
+    .p-img-wrapper {
+        height: 4rem;
+        border-radius: 50%;
+    }
+
+    .p-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    .txt-area {
+        font-size: 1rem;
+        width: 100%;
+        padding: 2rem;
+        height: 2rem;
+        color: #fff;
+        background: rgb(107, 107, 107);
+    }
+
+    .txt-area::placeholder {
+        color: #fff;
+    }
+
+    .r-btn {
+        padding: 1rem;
+        font-size: 1rem;
+        transition: all .3s;
+        box-shadow: none;
+    }
+
+    .r-btn:hover {
+        box-shadow: none;
+        background-color: rgb(47, 47, 47);
+
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-9 ">
+            <div class="row">
+                <div class="col-3">
+                    <img src="{{ url_for('static' , filename='images/book-svg.png')}}" alt="">
+                </div>
+                <div class="text-white ml-n5  col-8 contact">
+                    <h1>The Lord of the rings</h1>
+                    <div class="row">
+                        <div class="col-4" style="font-size: 1rem;">
+                            <p>Natnael Abay</p>
+                        </div>
+                        <div class="col-4" style="font-size: 1rem;">
+                            <p>pub date: 1992</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 text-right contact">
+            <div class="rating-showcase">
+                <span id="1" class="fa fa-star bg-red"></span>
+                <span id="2" class="fa fa-star bg-red"></span>
+                <span id="3" class="fa fa-star bg-red"></span>
+                <span id="4" class="fa fa-star"></span>
+                <span id="5" class="fa fa-star"></span>
+                <h4 class="text-left d-inline-block ml-3 rating-average">3</h4>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="text-white my-4">Submit A review</h2>
+    <div class="w-100 mt-3"> 
+        <div class="rating-wrapper my-4">
+            <span id="1" class="fa star fa-star checked"></span>
+            <span id="2" class="fa star fa-star checked"></span>
+            <span id="3" class="fa star fa-star checked"></span>
+            <span id="4" class="fa star fa-star"></span>
+            <span id="5" class="fa star fa-star"></span>
+            <h4 class="text-left d-inline-block ml-3 rating-count">0</h4>
+        </div>
+        <form action="" class="r-form" id="r-form">
+            <div class="row">
+                <div class="col-10">
+                    <input type="text" placeholder="Submit text" name="rating_text" class="txt-area">
+                </div>
+                <div class="col-2 d-flex justify-content-center flex-column ">
+                    <input type="submit" value="Submit" class="r-btn d-inline-block btn btn-primary">
+                </div>
+            </div>
+            <input type="number" placeholder="" id="rating_count" class="d-none" name="rating_count">
+        </form>
+    </div>
+
+    <div class=" r-card ">
+        <div class="d-inline my-auto">
+            <div class="p-img">
+                <img src="{{ url_for('static' , filename='images/avatar-icon.png')  }}" alt="" class="p-img-wrapper">
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h2>Nantael </h2>
+                </div>
+                <div class="col">
+                    <h6 class="text-right">rating: 4 </h6>
+                </div>
+            </div>
+            <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore deleniti
+                voluptatibus accusamus
+                consequatur provident placeat iure dolor id veritatis corrupti cumque asperiores blanditiis mollitia
+                ducimus ratione, excepturi sed ea suscipit? </p>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    const rating = document.querySelector(".rating-wrapper")
+    const ratingCount = document.querySelector(".rating-count")
+    const ratingInput = document.querySelector("#rating_count")
+    const r_form = document.querySelector("#r-form")
+    const rating_stars = document.querySelectorAll(".star")
+    let cur = false;
+    let not = 0;
+    let ids = ["1", "2", "3", "4", "5"];
+    r_form.addEventListener("submit", (e) => {
+        e.preventDefault()
+        ratingInput.value = (cur == false) ? 0 : cur;
+        console.log(ratingInput.value)
+        console.log(document.querySelector(".txt-area").value)
+    })
+    rating.addEventListener("mouseover", e => {
+        if (ids.includes(e.target.id)) {
+            for (let i = 0; i < parseInt(e.target.id); i++) {
+                rating_stars[i].style.color = "red"
+            }
+            not = parseInt(e.target.id)
+        }
+    });
+
+    rating.addEventListener("mouseout", e => {
+        for (let i = (cur == false) ? 0 : cur; i < 5; i++) {
+            rating_stars[i].style.color = "white";
+        }
+    });
+
+    rating_stars.forEach(r => {
+        r.addEventListener("click", e => {
+            for (let i = 0; i < parseInt(e.target.id); i++) {
+                rating_stars[i].style.color = "red";
+            }
+            for (let i = parseInt(e.target.id); i < 5; i++) {
+                rating_stars[i].style.color = "white";
+            }
+            cur = e.target.id;
+            ratingCount.innerHTML = cur
+        })
+    });
+</script>
+
+
+
+{% endblock %}
