@@ -1,0 +1,162 @@
+.search input[type="text"] {
+    padding: 1rem;
+    padding-left: 3rem;
+    width: 50%;
+    color: #fff;
+    background-color: #858585;
+    font-family: Poppins;
+    border: none;
+    border-radius: 12px;
+}
+
+.search {
+    position: relative;
+}
+
+.search i {
+    color: #fff;
+    padding: .8rem;
+    font-size: 1.3rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.search input[type="text"]:focus {
+    outline: none;
+    font-family: Poppins;
+    font-weight: 200;
+}
+
+.search input[type="text"]::placeholder {
+    color: white;
+    font-weight: 100;
+    font-family: Poppins;
+}
+
+input[list="browsers"] {
+    padding: 1rem;
+    padding-left: 2rem;
+    margin: 0 5px;
+    color: #fff;
+    background: #606060;
+    font-family: Poppins;
+    border: 1px solid white;
+    border-radius: 12px;
+    caret-color: white;
+    width: 20%;
+}
+
+input[list="browsers"]::placeholder {
+    font-family: Poppins;
+    color: white;
+    font-weight: 200;
+}
+
+.search-btn {
+    transition: all .3s;
+    background: black;
+    border: none;
+    color: white;
+    font-family: Poppins;
+    font-weight: 300;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.253);
+    box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+}
+
+.search-btn:focus {
+    outline: none;
+}
+
+.search-btn:hover {
+    outline: none;
+    background-color: rgba(247, 45, 45, 0.411);
+    /* transform: ; */
+}
+
+.search-btn:active {
+    outline: none;
+}
+
+.search-box {
+    transition: all .2s;
+    border-radius: 1rem;
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background: #5A5A5A;
+}
+
+.middle, .right {
+    font-family: Poppins;
+    font-weight: 200;
+}
+
+.middle {
+    position: relative;
+}
+
+.middle p {
+    margin-left: -7rem;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+}
+
+.right p {
+    margin-top: 1.5rem;
+}
+
+.left {
+    margin-left: -5rem;
+}
+
+.right {
+    margin-right: -2rem;
+}
+
+.search-box:hover {
+    color: black;
+    cursor: pointer;
+    background: rgb(207, 94, 94);
+    transform: scale(1.1);
+}
+
+.container {
+    padding-left: 4rem;
+    padding-left: 4rem;
+}
+
+.r-card {
+    transition: all .3s;
+    width: 330px;
+    height: 183px;
+    padding: 2rem;
+    background: #585858;
+    border: 1px solid #8E8E8E;
+    box-sizing: border-box;
+    border-radius: 19px;
+    position: relative
+}
+
+.r-card h1 {
+    font-family: Poppins;
+    font-weight: 100;
+    line-height: 26px;
+    color: #FFFFFF;
+}
+.r-card p {
+    font-family: Poppins;
+    font-weight: 100;
+    margin-top: 3rem;
+}
+.checked {
+    color: orange;
+}
+
+.r-card:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
