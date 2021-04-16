@@ -11,10 +11,19 @@
 {% block profile %}
 <ul class="nav justify-content-end">
     <li class="nav-item">
-        <a class="nav-link active" href="#">Natnael Abay</a>
+        <div class="row">
+            <div class="col-2">
+                <img class = "profile-avatar" src="{{  session.profile_url  }}" alt="">
+            </div>
+            <div class="col">
+                <a class="nav-link active" href="#">{{ session.name }}</a>
+            </div>
+        </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Logout</a>
+        <form action="{{ url_for('auth.logout')  }}">
+            <input class="nav-link" type="submit" value="Logout"  data-toggle="modal" data-target="#loginModal">
+        </form>
     </li>
 
 </ul>
@@ -22,10 +31,10 @@
 
 
 {% block content %}
-<h1 style = "text-transform: capitalize;">{{ session.name }}</h1>
+
 
 {% if session.profile_url %}
-    <img src="{{ session.profile_url }}" alt="">
+    <!-- <img src="{{ session.profile_url }}" alt=""> -->
 {% else %}
 <h1 style = "text-transform: capitalize;">No Profile image</h1>
 {% endif  %}
@@ -77,20 +86,40 @@
     <form  id="search-form">
         <i class="fas fa-search"></i>
         <input type="text" name="payload" class="" placeholder="Search" id="payload">
-        <input list="browsers" class="ml-4" name="type" id = "search-type"  placeholder="Select">
+        <select name="type"id = "search-type" >
+            <option value="ISBN">ISBN</option>
+            <option value="author">Author</option>
+            <option value="title">Title</option>
+            <option value="year">Year</option>
+          </select>
+        <!-- <input list="browsers" class="ml-4" name="type" id = "search-type"  placeholder="Select Type">
         <datalist id="browsers">
             <option value="ISBN">
             <option value="Author">
             <option value="Title">
             <option value="Year">
-        </datalist>
+        </datalist> -->
         <input type="submit" value="Search" class="ml-4 search-btn">
     </form>
+    <br>
+    <br>
+    <div class="errors"></div>
 </section>
 
 
-<div class="container">
-    <div class="search-box" style="position: relative;">
+<div class="container  max-height search-content">
+
+
+    <!-- Loading Spinner should be added if api used  -->
+
+    <div class="search-svg-wrapper">
+        <img height="450" class="image-responsive" src="{{ url_for('static', filename='images/search.svg')  }}" alt="">
+    </div>
+
+
+
+
+    <!-- <div class="search-box" style="position: relative;">
         <div class="left">
             <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
         </div>
@@ -149,12 +178,38 @@
         <div class="right">
             <p>By. <span>Natnael Abay</span></p>
         </div>
-    </div>
+    </div> -->
 </div>
 
 
 
 
+
+
+
+<style>
+.max-height {
+    margin-bottom: 5rem;
+    height: 35rem;
+    width: 100%;
+    position: relative;;
+}
+.search-svg-wrapper {
+    z-index: -1;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.profile-avatar {
+
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+}
+
+</style>
 
 
 <script src="{{ url_for('static' , filename='js/profile.js')  }}"></script>
