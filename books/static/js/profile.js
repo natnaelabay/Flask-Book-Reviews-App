@@ -35,8 +35,8 @@ searchForm.addEventListener("submit", (e) => {
               // console.log(books[i]);
               // break;
               search_aggregator.innerHTML += `
-                <a href="/book?id=${i}" >
-                  <div class="search-box mt-3" style="position: relative;" onClick="document.querySelector("book-${i}").submit()">
+                <a href="/book-review/${books[i].isbn}" >
+                  <div class="search-box mt-3" style="position: relative;">
                       <div class="left">
                           <img src="static/images/a.png" alt="">
                       </div>
@@ -47,7 +47,7 @@ searchForm.addEventListener("submit", (e) => {
                           <p>By. <span>${books[i].author}</span></p>
                       </div>
                   </div>
-                  <input name="book_id" type="number" value="${books[i].isbn}" />
+                  <input name="book_id" type="text" class="d-none" value="${books[i].isbn}" />
                 </a>
                 `
             }
