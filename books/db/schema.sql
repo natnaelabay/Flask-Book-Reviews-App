@@ -14,21 +14,20 @@ CREATE TABLE USERS (
 );
 
 CREATE TABLE BOOKS (
-    id    SERIAL,
     ISBN VARCHAR(17),
     TITLE VARCHAR(250),
     author VARCHAR(250),
     year smallint,
-    PRIMARY KEY(id) 
+    PRIMARY KEY(ISBN) 
 );
 
 
 CREATE TABLE REVIEWS(
     rating_id SERIAL,
-    book_id BIGINT ,
+    book_id VARCHAR(27) ,
     usr_id BIGINT ,
     rate_count BIGINT ,
     rate_desc VARCHAR(255),
-    FOREIGN KEY(book_id) REFERENCES BOOKS(id),
+    FOREIGN KEY(book_id) REFERENCES BOOKS(ISBN),
     FOREIGN KEY(usr_id) REFERENCES USERS(id)
 );
