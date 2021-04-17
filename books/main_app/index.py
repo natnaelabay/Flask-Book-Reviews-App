@@ -33,7 +33,7 @@ def search_book():
             ).fetchall()
     else:
         obj_books = db.execute(
-            f"select * from books where {search_category} LIKE '%{payload}%' limit 200 ;" , {
+            f"select  * from books where {search_category} LIKE '%{payload}%' limit 200 ;" , {
                 "payload" : payload,
                 "search_category" : search_category
             }
@@ -41,17 +41,15 @@ def search_book():
     data = []
     for row in obj_books:
         r = [x for x in row]
-        d = { "pub_date" : r[0], "title" : r[2], "isbn" : r[1].strip(), "author" :r[3] }
+        d = { "isbn": r[0].strip(), "title" : r[1].strip(), "author" : r[2].strip(), "year" : r[3] }
         data.append(d)
     return jsonify({"data" : data , "success" : True})
 
-
-
-@bp.route('/book/<isbn>')
-def book(isbn):
-    db = get_db()
-    book = db.execute("SELECT * FROM BOOKS WHERE isbn = :isbn;" , {"isbn" : isbn}).fetchone()
-    return render_template("book.html" , data=[x for x in book])
+# @bp.route('/book/<isbn>')
+# def book(isbn):
+#     db = get_db()
+#     book = db.execute("SELECT * FROM BOOKS WHERE isbn = :isbn;" , {"isbn" : isbn}).fetchone()
+#     return render_template("book.html" , data=[x for x in book])
 
 
 @bp.route("/profile")
@@ -59,19 +57,32 @@ def book(isbn):
 def profile():
     return render_template("profile.html")
 
-@bp.route('/book-review/<book_id>')
-def getbookpage(book_id):
+@bp.route('/book-review/<isbn>')
+@login_required
+def getbookpage(isbn):
     db = get_db()
-    reviews = db.execute("SELECT * FROM USERS INNER JOIN REVIEWS ON  REVIEWS.book_id = :book_id", {"book_id" : book_id}).fetchall()
-    return jsonify([x for x in reviews] )
+    reviews = []
+    reviews = db.execute("SELECT * FROM USERS INNER JOIN REVIEWS ON  REVIEWS.book_id = :book_id", {"book_id" : isbn}).fetchall()
+    book_info = db.execute("SELECT * FROM BOOKS WHERE RTRIM(LTRIM(isbn)) = :isbn;", {"isbn" : isbn.strip()}).fetchone()
+    reviews = [x for x in reviews]
+    # books = [x for x in book_info]
+    # data = []
+    data = []
+    # for book in book_info:
+    data = dict(book_info)
+    data["rating_star"] = 3
+    data["rating"] = 3
+    # return jsonify(data)
+    # return jsonify(dict(book_info))
+    return render_template("book.html", book_info=data, reviews=reviews)
 
-@bp.route("/rate" , methods=["POST"])
+@bp.route("/submit-review" , methods=["POST"])
 @login_required
 def submit_rate():
     rating_count = request.form.get("rating_count")
     rating_text = request.form.get("rating_text")
-    book_id = 1
-    usr_id = 1
+    book_id = request.form.get("review_isbn")
+    usr_id = session.get("username")
     if (rating_count and rating_text and book_id and usr_id):
         db = get_db()
         db.execute(
@@ -83,9 +94,9 @@ def submit_rate():
                 "rate_desc" : rating_text
             })
         db.commit()
-        return jsonify("success")
+        return redirect(url_for("main.getbookpage" , isbn=book_id))
     else:
-        return "something happened"
+        return jsonify([rating_count, rating_text, book_id, usr_id])
 
 @bp.route("/a")
 def a():
