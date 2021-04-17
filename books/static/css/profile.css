@@ -73,7 +73,6 @@ input[list="browsers"]::placeholder {
 .search-btn:hover {
     outline: none;
     background-color: rgba(247, 45, 45, 0.411);
-    /* transform: ; */
 }
 
 .search-btn:active {
@@ -121,7 +120,7 @@ input[list="browsers"]::placeholder {
     color: black;
     cursor: pointer;
     background: rgb(207, 94, 94);
-    transform: scale(1.1);
+    transform: scale(1.01);
 }
 
 .container {
@@ -156,7 +155,7 @@ input[list="browsers"]::placeholder {
     color: orange;
 }
 
-.r-card:hover {
+/* .r-card:hover {
     cursor: pointer;
     transform: scale(1.1);
-}
+} */

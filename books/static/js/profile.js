@@ -30,19 +30,26 @@ searchForm.addEventListener("submit", (e) => {
             search_aggregator.style.height = "auto" 
             books = r.data;
             search_aggregator.innerHTML = ""
+            
             for (let i = 0; i < 5; i++) {
+              // console.log(books[i]);
+              // break;
               search_aggregator.innerHTML += `
-                <div class="search-box mt-3" style="position: relative;">
-                    <div class="left">
-                        <img src="static/images/a.png" alt="">
-                    </div>
-                    <div class="middle">
-                        <p>${books[i].title}</p>
-                    </div>
-                    <div class="right">
-                        <p>By. <span>${books[i].author}</span></p>
-                    </div>
-                </div>`
+                <a href="/book?id=${i}" >
+                  <div class="search-box mt-3" style="position: relative;" onClick="document.querySelector("book-${i}").submit()">
+                      <div class="left">
+                          <img src="static/images/a.png" alt="">
+                      </div>
+                      <div class="middle">
+                          <p>${books[i].title}</p>
+                      </div>
+                      <div class="right">
+                          <p>By. <span>${books[i].author}</span></p>
+                      </div>
+                  </div>
+                  <input name="book_id" type="number" value="${books[i].isbn}" />
+                </a>
+                `
             }
             for (const book  of r.data) {
               console.log("IN HERE");
