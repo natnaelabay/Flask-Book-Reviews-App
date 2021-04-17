@@ -92,13 +92,6 @@
             <option value="title">Title</option>
             <option value="year">Year</option>
           </select>
-        <!-- <input list="browsers" class="ml-4" name="type" id = "search-type"  placeholder="Select Type">
-        <datalist id="browsers">
-            <option value="ISBN">
-            <option value="Author">
-            <option value="Title">
-            <option value="Year">
-        </datalist> -->
         <input type="submit" value="Search" class="ml-4 search-btn">
     </form>
     <br>
@@ -108,82 +101,11 @@
 
 
 <div class="container  max-height search-content">
-
-
     <!-- Loading Spinner should be added if api used  -->
-
     <div class="search-svg-wrapper">
         <img height="450" class="image-responsive" src="{{ url_for('static', filename='images/search.svg')  }}" alt="">
     </div>
-
-
-
-
-    <!-- <div class="search-box" style="position: relative;">
-        <div class="left">
-            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
-        </div>
-        <div class="middle">
-            <p>Lord of the rings</p>
-        </div>
-
-        <div class="right">
-            <p>By. <span>Natnael Abay</span></p>
-        </div>
-    </div>
-    <div class="search-box mt-4" style="position: relative;">
-        <div class="left">
-            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
-        </div>
-        <div class="middle">
-            <p>Lord of the rings</p>
-        </div>
-
-        <div class="right">
-            <p>By. <span>Natnael Abay</span></p>
-        </div>
-    </div>
-    <div class="search-box mt-4" style="position: relative;">
-        <div class="left">
-            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
-        </div>
-        <div class="middle">
-            <p>Lord of the rings</p>
-        </div>
-
-        <div class="right">
-            <p>By. <span>Natnael Abay</span></p>
-        </div>
-    </div>
-    <div class="search-box mt-4" style="position: relative;">
-        <div class="left">
-            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
-        </div>
-        <div class="middle">
-            <p>Lord of the rings</p>
-        </div>
-
-        <div class="right">
-            <p>By. <span>Natnael Abay</span></p>
-        </div>
-    </div>
-    <div class="search-box mt-4" style="position: relative;">
-        <div class="left">
-            <img src="{{ url_for('static' , filename='images/a.png') }}" alt="">
-        </div>
-        <div class="middle">
-            <p>Lord of the rings</p>
-        </div>
-
-        <div class="right">
-            <p>By. <span>Natnael Abay</span></p>
-        </div>
-    </div> -->
 </div>
-
-
-
-
 
 
 
@@ -207,6 +129,9 @@
     height: 3rem;
     width: 3rem;
     border-radius: 50%;
+}
+a:hover {
+    text-decoration: none;
 }
 
 </style>
