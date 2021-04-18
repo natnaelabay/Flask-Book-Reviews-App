@@ -1,11 +1,13 @@
 from flask import (
 	Blueprint, flash, g, redirect, render_template, request, session, url_for,json,jsonify
 )
+import math
 from werkzeug.security import check_password_hash , generate_password_hash
 from books.db.db import get_db
 from books.utlis.utils import build_sql
 from books.auth.auth import login_required, redirect_if_logged_in
 from sqlalchemy import text
+
 bp = Blueprint("main", __name__)
  
 @bp.route("/home/")
@@ -45,13 +47,6 @@ def search_book():
         data.append(d)
     return jsonify({"data" : data , "success" : True})
 
-# @bp.route('/book/<isbn>')
-# def book(isbn):
-#     db = get_db()
-#     book = db.execute("SELECT * FROM BOOKS WHERE isbn = :isbn;" , {"isbn" : isbn}).fetchone()
-#     return render_template("book.html" , data=[x for x in book])
-
-
 @bp.route("/profile")
 @login_required
 def profile():
@@ -62,19 +57,115 @@ def profile():
 def getbookpage(isbn):
     db = get_db()
     reviews = []
-    reviews = db.execute("SELECT * FROM USERS INNER JOIN REVIEWS ON  REVIEWS.book_id = :book_id", {"book_id" : isbn}).fetchall()
-    book_info = db.execute("SELECT * FROM BOOKS WHERE RTRIM(LTRIM(isbn)) = :isbn;", {"isbn" : isbn.strip()}).fetchone()
-    reviews = [x for x in reviews]
-    # books = [x for x in book_info]
-    # data = []
+    book = db.execute("SELECT * FROM Books where  isbn  = :book_id", {"book_id" : isbn.strip()}).fetchone()
+    # reviews = db.execute("SELECT ( USERS.f_name , USERS.l_name, USERS.u_name, USERS.profile_url, REVIEWS.book_id, REVIEWS.rate_count, REVIEWS.rate_desc ) FROM USERS INNER JOIN REVIEWS ON USERS.u_name = REVIEWS.usr_id where  REVIEWS.book_id =  :isbn ;", {"isbn" : isbn.strip()}).fetchall()
+    reviews = db.execute(
+        "SELECT USERS.f_name,USERS.l_name,USERS.u_name , USERS.profile_url, REVIEWS.book_id, REVIEWS.rate_count,REVIEWS.rate_desc  FROM USERS INNER JOIN REVIEWS ON USERS.u_name = REVIEWS.usr_id where  REVIEWS.book_id =  :isbn ;", {"isbn" : isbn.strip()}).fetchall()
+    '''
+        find the amount of total reviews 
+        find the mount of 1 - 5 reviews
+        calculate average for each of them
+
+    '''
+    rows = reviews
     data = []
-    # for book in book_info:
-    data = dict(book_info)
-    data["rating_star"] = 3
-    data["rating"] = 3
-    # return jsonify(data)
-    # return jsonify(dict(book_info))
-    return render_template("book.html", book_info=data, reviews=reviews)
+    total_rating = 0
+    ratings_count = {"one":0 , "two": 0 , "three" :0  , "four" : 0  , "five" :0 , "total_count" :0 , "avg_rating" : 0}
+    total_rows = 0
+    counter = 0
+    if reviews:
+        for row in rows:
+            r = [x for x in row]
+            img_url = r[3].split('\\')[3]
+            img_ext =img_url[img_url.index(".")+ 1 :]
+            img_ext = url_for("static" , filename = f"images/{r[2].strip() + '.' + img_ext}")
+            d = { 
+                "f_name": r[0].strip(), 
+                "l_name" : r[1].strip(), 
+                "u_name" : r[2].strip(), 
+                "usr_profile" : img_ext, 
+                "isbn" : r[4] , 
+                "rate_count" : r[5], 
+                "rate_desc" : r[6]
+            }
+            # total_rating += r[5]
+            total_rows += 1
+            rate_value = r[5]
+            if rate_value == 1:
+                ratings_count["one"] += 1
+                counter +=  1
+            elif rate_value == 2:
+                counter +=  2
+                ratings_count["tow"] += 1
+            elif rate_value == 3:
+                counter +=  3
+                ratings_count["three"] += 1
+            elif rate_value == 4:
+                counter +=  4
+                ratings_count["four"] += 1
+            elif rate_value == 5:
+                counter +=  5
+                ratings_count["five"] += 1
+            data.append(d)
+        ratings_count["one_avg"] = (ratings_count["one"] / total_rows) * 100
+        ratings_count["two_avg"] = ((ratings_count["two"] )/ total_rows) * 100
+        ratings_count["three_avg"] = ((ratings_count["three"] )/ total_rows) * 100
+        ratings_count["four_avg"] = ((ratings_count["four"] )/ total_rows) * 100
+        ratings_count["five_avg"] = ((ratings_count["five"]  )/ total_rows) * 100
+        ratings_count["total_count"] = total_rows 
+        avg_rating =  (counter/(total_rows ))
+        ratings_count["star_rating"] =round(avg_rating)
+        ratings_count["avg_rating"] =(avg_rating)
+        # return jsonify(ratings_count)
+        ratings_count["api_avg"] = 0
+        return render_template("book.html" , book_info = book, rating=ratings_count)
+    else:
+        return render_template("book.html" , book_info = book, )
+
+    # for row in rows:
+    #     r = [x for x in row]
+    #     # d = { "isbn": r[0], "title" : r[1], "author" : r[2], "year" : r[3] }
+    #     d = { 
+    #         "f_name": r[0].strip(), 
+    #         "l_name" : r[1].strip(), 
+    #         "u_name" : r[2].strip(), 
+    #         "usr_profile" : r[3], 
+    #         "isbn" : r[4] , 
+    #         "rate_count" : r[5], 
+    #         "rate_desc" : r[6]
+    #      }
+    #     data.append(d)
+    return jsonify(data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # book_info = db.execute("SELECT * FROM BOOKS WHERE RTRIM(LTRIM(isbn)) = :isbn;", {"isbn" : isbn.strip()}).fetchone()
+    # reviews = [x for x in reviews]
+    # # books = [x for x in book_info]
+    # # data = []
+    # data = []
+    # # for book in book_info:
+    # data = dict(book_info)
+    # data["rating_star"] = 3
+    # data["rating"] = 3
+    # # return jsonify(data)
+    # # return jsonify(dict(book_info))
+    # return render_template("book.html", book_info=data, reviews=reviews)
 
 @bp.route("/submit-review" , methods=["POST"])
 @login_required

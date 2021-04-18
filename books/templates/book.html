@@ -133,7 +133,9 @@
             </div>
         </div>
         <div class="col-3 text-right contact">
-            <div class="rating-showcase">
+
+            <!-- <div class="rating-showcase">
+                {% if review %}
                 {% for i in range(5) %}
                 {% if i < book_info.rating_star %} <span id="{{i + 1}}" class="fa fa-star bg-red"></span>
                     {% else %}
@@ -141,6 +143,29 @@
                     {% endif %}
                     {% endfor %}
                     <h4 class="text-left d-inline-block ml-3 rating-average">{{book_info.rating}}</h4>
+                    {% else%}
+                    {% for i in range(5) %}
+                    <span class="fa fa-star "></span>
+                    {% endfor %}
+                    <h4 class="text-left d-inline-block ml-3 rating-average">0</h4>
+                {% endif %}
+
+            </div>  -->
+            <div class="rating-showcase">
+                {% if rating %}
+                {% for i in range(5) %}
+                {% if i < rating.star_rating %} <span id="{{i + 1}}" class="fa fa-star bg-red"></span>
+                    {% else %}
+                    <span id="{{i + 1}}" class="fa fa-star "></span>
+                    {% endif %}
+                    {% endfor %}
+                    <h4 class="text-left d-inline-block ml-3 rating-average">{{rating.avg_rating}}</h4>
+                    {% else %}
+                    {% for i in range(5) %}
+                    <span class="fa fa-star "></span>
+                    {% endfor %}
+                    <h4 class="text-left d-inline-block ml-3 rating-average">0</h4>
+                    {% endif%}
             </div>
             <!-- <span id="3" class="fa fa-star bg-red"></span>
             <span id="4" class="fa fa-star"></span>
@@ -151,10 +176,76 @@
 
     <div class="mx-auto my-4 card bg-rate ">
         <div class="text-center py-1">
-            <p style="font-size: 1.2rem;">Total Ratings: 30</p>
+            <p style="font-size: 1.2rem;">Total Ratings:
+                {%if rating %}{{rating.total_count}}{% else %}0{% endif %}
+            </p>
+            <p style="font-size: 1.2rem;">Average Rating from API:
+                {%if rating %}{{rating.api_avg}}{% else %}No data from API{% endif %}
+            </p>
         </div>
+        {% if rating %}
         <div class="row mx-4">
-            
+
+            <div class="side">
+                <div>5 star</div>
+            </div>
+            <div class="middle">
+                <div class="bar-container">
+                    <div class="bar-5" style="width: {{ rating.five_avg}}%;"></div>
+                </div>
+            </div>
+            <div class="side right">
+                <div>{{ rating.five}}</div>
+            </div>
+            <div class="side">
+                <div>4 star</div>
+            </div>
+            <div class="middle">
+                <div class="bar-container">
+                    <div class="bar-4" style="width: {{ rating.four_avg}}%;"></div>
+                </div>
+            </div>
+            <div class="side right">
+                <div>{{rating.four}}</div>
+            </div>
+            <div class="side">
+                <div>3 star</div>
+            </div>
+            <div class="middle">
+                <div class="bar-container">
+                    <div class="bar-3" style="width: {{ rating.three_avg}}%;"></div>
+                </div>
+            </div>
+            <div class="side right">
+                <div>{{ rating.three }}</div>
+            </div>
+            <div class="side">
+                <div>2 star</div>
+            </div>
+            <div class="middle">
+                <div class="bar-container">
+                    <div class="bar-2" style="width: {{ rating.two_avg}}%;"></div>
+                </div>
+            </div>
+            <div class="side right">
+                <div>{{rating.two}}</div>
+            </div>
+            <div class="side">
+                <div>1 star</div>
+            </div>
+            <div class="middle">
+                <div class="bar-container">
+                    <div class="bar-1" style="width: {{ rating.one_avg}}%;"></div>
+                </div>
+            </div>
+            <div class="side right">
+                <div>{{ rating.one }}</div>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="row mx-4">
             <div class="side">
                 <div>5 star</div>
             </div>
@@ -164,7 +255,7 @@
                 </div>
             </div>
             <div class="side right">
-                <div>150</div>
+                <div>0</div>
             </div>
             <div class="side">
                 <div>4 star</div>
@@ -175,7 +266,7 @@
                 </div>
             </div>
             <div class="side right">
-                <div>63</div>
+                <div>0</div>
             </div>
             <div class="side">
                 <div>3 star</div>
@@ -186,7 +277,7 @@
                 </div>
             </div>
             <div class="side right">
-                <div>15</div>
+                <div>0</div>
             </div>
             <div class="side">
                 <div>2 star</div>
@@ -197,7 +288,7 @@
                 </div>
             </div>
             <div class="side right">
-                <div>6</div>
+                <div>0</div>
             </div>
             <div class="side">
                 <div>1 star</div>
@@ -208,9 +299,10 @@
                 </div>
             </div>
             <div class="side right">
-                <div>20</div>
+                <div>0</div>
             </div>
         </div>
+        {% endif %}
 
     </div>
     <hr class="bg-white">
@@ -249,38 +341,38 @@
         /* The bar container */
         .bar-container {
             width: 100%;
-            background-color: #dacaca;
+            background-color: #e7e7e7;
             text-align: center;
             color: white;
         }
 
         /* Individual bars */
         .bar-5 {
-            width: 60%;
+            width: 0%;
             height: 18px;
             background-color: #4CAF50;
         }
 
         .bar-4 {
-            width: 30%;
+            width: 0%;
             height: 18px;
             background-color: #2196F3;
         }
 
         .bar-3 {
-            width: 10%;
+            width: 0%;
             height: 18px;
             background-color: #00bcd4;
         }
 
         .bar-2 {
-            width: 4%;
+            width: 0%;
             height: 18px;
             background-color: #ff9800;
         }
 
         .bar-1 {
-            width: 15%;
+            width: 0%;
             height: 18px;
             background-color: #f44336;
         }
@@ -290,12 +382,12 @@
     <h2 class="text-white my-4">Submit A review</h2>
     <div class="w-100 mt-3">
         <div class="rating-wrapper my-4">
-            <span id="1" class="fa star fa-star checked"></span>
-            <span id="2" class="fa star fa-star checked"></span>
-            <span id="3" class="fa star fa-star checked"></span>
+            <span id="1" class="fa star fa-star" style="color: red;"></span>
+            <span id="2" class="fa star fa-star"></span>
+            <span id="3" class="fa star fa-star"></span>
             <span id="4" class="fa star fa-star"></span>
             <span id="5" class="fa star fa-star"></span>
-            <h4 class="text-left d-inline-block ml-3 rating-count">0</h4>
+            <h4 class="text-left d-inline-block ml-3 rating-count">1</h4>
         </div>
         <form action="/submit-review" method="POST" class="r-form" id="r-form">
             <div class="row">
@@ -308,29 +400,32 @@
             </div>
             <input type="text" placeholder="" id="review_isbn" class="d-none" name="review_isbn"
                 value="{{book_info.isbn}}">
-            <input type="number" placeholder="" id="rating_count" class="d-none" value="0" name="rating_count">
+            <input type="text" placeholder="" id="rating_count" class="d-none" name="rating_count">
         </form>
     </div>
 
+
+    {% for review in rating %}
     <div class=" r-card ">
         <div class="d-inline my-auto">
             <div class="p-img">
-                <img src="{{ url_for('static' , filename='images/avatar-icon.png')  }}" alt="" class="p-img-wrapper">
+                <img src="{{review.usr_profile }}" alt="" class="p-img-wrapper">
             </div>
             <div class="row">
                 <div class="col">
-                    <h2>Nantael </h2>
+                    <h2>{{review.f_name | capitalize}} {{ review.l_name | capitalize }}</h2>
                 </div>
                 <div class="col">
-                    <h6 class="text-right">rating: 4 </h6>
+                    <h6 class="text-right">rating: {{ review.rate_count }} </h6>
                 </div>
             </div>
-            <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore deleniti
-                voluptatibus accusamus
-                consequatur provident placeat iure dolor id veritatis corrupti cumque asperiores blanditiis mollitia
-                ducimus ratione, excepturi sed ea suscipit? </p>
+            <p class="text-white">{{ review.rate_desc }}</p>
         </div>
     </div>
+    {% else %}
+    <h1>No reviews yet! care to give one? </h1>
+    {% endfor %}
+
 
     {% else %}
     <h1>No such thing as a book</h1>
@@ -349,12 +444,6 @@
     let cur = false;
     let not = 0;
     let ids = ["1", "2", "3", "4", "5"];
-    /* r_form.addEventListener("submit", (e) => {
-        e.preventDefault()
-        ratingInput.value = (cur == false) ? 0 : cur;
-        console.log(ratingInput.value)
-        console.log(document.querySelector(".txt-area").value)
-    }) */
     rating.addEventListener("mouseover", e => {
         if (ids.includes(e.target.id)) {
             for (let i = 0; i < parseInt(e.target.id); i++) {
@@ -364,7 +453,7 @@
         }
     });
     rating.addEventListener("mouseout", e => {
-        for (let i = (cur == false) ? 0 : cur; i < 5; i++) {
+        for (let i = (cur == false) ? 1 : cur; i < 5; i++) {
             rating_stars[i].style.color = "white";
         }
     });
@@ -378,7 +467,8 @@
             }
             cur = e.target.id;
             ratingCount.innerHTML = cur
-            ratingCount.value = cur
+            ratingInput.value = cur
+            console.log(cur)
         })
     });
 </script>

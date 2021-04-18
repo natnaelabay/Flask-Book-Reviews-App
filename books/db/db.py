@@ -7,7 +7,6 @@ from flask.cli import with_appcontext
 from dotenv import load_dotenv
 load_dotenv()
 
-
 def get_db():
     if 'db' not in g:
         engine = create_engine(os.getenv("DATABASE_URL"))
