@@ -278,14 +278,15 @@
 
 
 <script>
-    const rating = document.querySelector(".rating-wrapper")
-    const ratingCount = document.querySelector(".rating-count")
-    const ratingInput = document.querySelector("#rating_count")
     const r_form = document.querySelector("#r-form")
     const rating_stars = document.querySelectorAll(".star")
     let cur = false;
     let not = 0;
     let ids = ["1", "2", "3", "4", "5"];
+    {% if has_not_submitted %}
+    const rating = document.querySelector(".rating-wrapper")
+    const ratingCount = document.querySelector(".rating-count")
+    const ratingInput = document.querySelector("#rating_count")
     rating.addEventListener("mouseover", e => {
         if (ids.includes(e.target.id)) {
             for (let i = 0; i < parseInt(e.target.id); i++) {
@@ -313,6 +314,7 @@
             console.log(cur)
         })
     });
+    {% endif %}
     document.querySelector("#logout-submit")
     .addEventListener("click" , e=> {
         document.querySelector("#logout-form").submit()
