@@ -17,15 +17,18 @@ with open("books.csv") as f:
         if count == 0:
             count = 123
         else:
-            db.execute(
-                "INSERT INTO books( isbn, title, author, year) VALUES (:isbn, :title,:author , :year);",
-                {
-                    "isbn": row[0].strip(),
-                    "title": row[1].strip(),
-                    "author": row[2].strip(),
-                    "year": int(row[3].strip()),
-                }
-                )
-            db.commit()
+            try:
+                db.execute(
+                    "INSERT INTO books( isbn, title, author, year) VALUES (:isbn, :title,:author , :year);",
+                    {
+                        "isbn": row[0].strip(),
+                        "title": row[1].strip(),
+                        "author": row[2].strip(),
+                        "year": int(row[3].strip()),
+                    }
+                    )
+                db.commit()
+            except :
+                pass
 
 print("completed!!!!!!!!")

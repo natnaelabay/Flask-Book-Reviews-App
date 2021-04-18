@@ -9,7 +9,7 @@ load_dotenv()
 
 def get_db():
     if 'db' not in g:
-        engine = create_engine(os.getenv("DATABASE_URL"))
+        engine = create_engine(os.getenv("DATABASE_URL_heroku"))
         db = scoped_session(sessionmaker(bind=engine))
         g.db = db
     return g.db
