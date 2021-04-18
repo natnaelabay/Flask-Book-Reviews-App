@@ -378,6 +378,7 @@
         }
     </style>
 
+    {% if has_not_submitted %}
 
     <h2 class="text-white my-4">Submit A review</h2>
     <div class="w-100 mt-3">
@@ -403,32 +404,35 @@
             <input type="text" placeholder="" id="rating_count" class="d-none" name="rating_count">
         </form>
     </div>
+    {% endif%}
+    <div class="">
 
+        {% for review in reviews %}
 
-    {% for review in rating %}
-    <div class=" r-card ">
-        <div class="d-inline my-auto">
-            <div class="p-img">
-                <img src="{{review.usr_profile }}" alt="" class="p-img-wrapper">
-            </div>
-            <div class="row">
-                <div class="col">
-                    <h2>{{review.f_name | capitalize}} {{ review.l_name | capitalize }}</h2>
+        <div class=" r-card mx-auto ">
+            <div class="d-inline my-auto">
+                <div class="p-img">
+                    <img src="{{review.usr_profile }}" alt="" class="p-img-wrapper">
                 </div>
-                <div class="col">
-                    <h6 class="text-right">rating: {{ review.rate_count }} </h6>
+                <div class="row">
+                    <div class="col">
+                        <h2>{{review.f_name | capitalize}} {{ review.l_name | capitalize }}</h2>
+                    </div>
+                    <div class="col">
+                        <h6 class="text-right">rating: {{ review.rate_count }} </h6>
+                    </div>
                 </div>
+                <p class="text-white">{{ review.rate_desc }}</p>
             </div>
-            <p class="text-white">{{ review.rate_desc }}</p>
         </div>
+        {% else %}
+        <h1>No reviews yet! care to give one? </h1>
+        {% endfor %}
     </div>
-    {% else %}
-    <h1>No reviews yet! care to give one? </h1>
-    {% endfor %}
 
 
     {% else %}
-    <h1>No such thing as a book</h1>
+        <h1 class="text-center">You have altered The url: Book not found</h1>
     {% endif %}
 
 </div>

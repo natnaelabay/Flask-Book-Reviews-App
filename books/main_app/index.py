@@ -58,7 +58,8 @@ def getbookpage(isbn):
     db = get_db()
     reviews = []
     book = db.execute("SELECT * FROM Books where  isbn  = :book_id", {"book_id" : isbn.strip()}).fetchone()
-    # reviews = db.execute("SELECT ( USERS.f_name , USERS.l_name, USERS.u_name, USERS.profile_url, REVIEWS.book_id, REVIEWS.rate_count, REVIEWS.rate_desc ) FROM USERS INNER JOIN REVIEWS ON USERS.u_name = REVIEWS.usr_id where  REVIEWS.book_id =  :isbn ;", {"isbn" : isbn.strip()}).fetchall()
+    if not book:
+        return render_template("book.html")
     reviews = db.execute(
         "SELECT USERS.f_name,USERS.l_name,USERS.u_name , USERS.profile_url, REVIEWS.book_id, REVIEWS.rate_count,REVIEWS.rate_desc  FROM USERS INNER JOIN REVIEWS ON USERS.u_name = REVIEWS.usr_id where  REVIEWS.book_id =  :isbn ;", {"isbn" : isbn.strip()}).fetchall()
     '''
@@ -69,13 +70,17 @@ def getbookpage(isbn):
     '''
     rows = reviews
     data = []
+    user_name = session['username']
     total_rating = 0
     ratings_count = {"one":0 , "two": 0 , "three" :0  , "four" : 0  , "five" :0 , "total_count" :0 , "avg_rating" : 0}
     total_rows = 0
     counter = 0
+    has_not_submitted = True
     if reviews:
         for row in rows:
             r = [x for x in row]
+            if r[2].strip() == user_name:
+                    has_not_submitted = False
             img_url = r[3].split('\\')[3]
             img_ext =img_url[img_url.index(".")+ 1 :]
             img_ext = url_for("static" , filename = f"images/{r[2].strip() + '.' + img_ext}")
@@ -116,11 +121,11 @@ def getbookpage(isbn):
         avg_rating =  (counter/(total_rows ))
         ratings_count["star_rating"] =round(avg_rating)
         ratings_count["avg_rating"] =(avg_rating)
-        # return jsonify(ratings_count)
+        # return jsonify(session["username"])
         ratings_count["api_avg"] = 0
-        return render_template("book.html" , book_info = book, rating=ratings_count)
+        return render_template("book.html" , book_info = book, rating=ratings_count, reviews = data, has_not_submitted = has_not_submitted)
     else:
-        return render_template("book.html" , book_info = book, )
+        return render_template("book.html" , book_info = book, has_not_submitted = True )
 
     # for row in rows:
     #     r = [x for x in row]
