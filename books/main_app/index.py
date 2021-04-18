@@ -48,6 +48,7 @@ def search_book():
     return jsonify({"data" : data , "success" : True})
 
 @bp.route("/profile")
+@bp.route("/home")
 @login_required
 def profile():
     return render_template("profile.html")
@@ -121,56 +122,12 @@ def getbookpage(isbn):
         avg_rating =  (counter/(total_rows ))
         ratings_count["star_rating"] =round(avg_rating)
         ratings_count["avg_rating"] =(avg_rating)
-        # return jsonify(session["username"])
         ratings_count["api_avg"] = 0
         return render_template("book.html" , book_info = book, rating=ratings_count, reviews = data, has_not_submitted = has_not_submitted)
     else:
         return render_template("book.html" , book_info = book, has_not_submitted = True )
-
-    # for row in rows:
-    #     r = [x for x in row]
-    #     # d = { "isbn": r[0], "title" : r[1], "author" : r[2], "year" : r[3] }
-    #     d = { 
-    #         "f_name": r[0].strip(), 
-    #         "l_name" : r[1].strip(), 
-    #         "u_name" : r[2].strip(), 
-    #         "usr_profile" : r[3], 
-    #         "isbn" : r[4] , 
-    #         "rate_count" : r[5], 
-    #         "rate_desc" : r[6]
-    #      }
-    #     data.append(d)
     return jsonify(data)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # book_info = db.execute("SELECT * FROM BOOKS WHERE RTRIM(LTRIM(isbn)) = :isbn;", {"isbn" : isbn.strip()}).fetchone()
-    # reviews = [x for x in reviews]
-    # # books = [x for x in book_info]
-    # # data = []
-    # data = []
-    # # for book in book_info:
-    # data = dict(book_info)
-    # data["rating_star"] = 3
-    # data["rating"] = 3
-    # # return jsonify(data)
-    # # return jsonify(dict(book_info))
-    # return render_template("book.html", book_info=data, reviews=reviews)
 
 @bp.route("/submit-review" , methods=["POST"])
 @login_required
@@ -193,7 +150,3 @@ def submit_rate():
         return redirect(url_for("main.getbookpage" , isbn=book_id))
     else:
         return jsonify([rating_count, rating_text, book_id, usr_id])
-
-@bp.route("/a")
-def a():
-    return render_template("book.html")
