@@ -37,6 +37,8 @@ def login():
                         img_url = user['profile_url'].split('\\')[3]
                         img_ext =img_url[img_url.index(".")+ 1 :]
                         session["profile_url"] = url_for("static" , filename = f"images/{user['u_name'] + '.' + img_ext}")
+                    else:
+                        session["profile_url"] = url_for('static' ,filename = "images/default.png")
                     session["username"] = user["u_name"]
                     session["name"] = user["f_name"] + " " + user["l_name"]
                     message = {}
@@ -120,6 +122,7 @@ def register():
                                 "l_name": l_name,
                                 "u_name" : username,
                                 "password": generate_password_hash(password),
+
                             }
                         )
                         db.commit()
