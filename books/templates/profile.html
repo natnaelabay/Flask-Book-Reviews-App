@@ -21,8 +21,8 @@
         </div>
     </li>
     <li class="nav-item">
-        <form action="{{ url_for('auth.logout')  }}">
-            <input class="nav-link" type="submit" value="Logout"  data-toggle="modal" data-target="#loginModal">
+        <form action="{{ url_for('auth.logout')  }}" id = "logout-form">
+            <a class="nav-link" type="submit" id="logout-submit"  data-toggle="modal" data-target="#loginModal">Logout</a>
         </form>
     </li>
 

@@ -7,107 +7,35 @@
 {{ super() }}
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
     integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
-
+<link rel="stylesheet" href="{{url_for('static' , filename='css/book.css')}}">
 {% endblock %}
 
 
+{% block profile %}
+<ul class="nav justify-content-end">
+    <li class="nav-item">
+        <div class="row">
+            <div class="col-2">
+                <img class = "profile-avatar avatar" src="{{  session.profile_url  }}" alt="">
+            </div>
+            <div class="col justify-content-center d-flex flex-column">
+                <a class="nav-link d-inline-block active" href="#">{{ session.name }}</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <div class="d-flex flex-column justify-content-center">
+            <form action="{{ url_for('auth.logout')  }}" id="logout-form" class = "d-inline-block">
+                <a class="nav-link" id="logout-submit" href="#"  data-toggle="modal" data-target="#loginModal">Logout</a>
+            </form>
+        </div>
+    </li>
+
+</ul>
+{% endblock %}
+
 {% block content %}
-<style>
-    body {
-        font-size: 1.5rem;
-    }
 
-    .container {
-        font-family: Poppins;
-        font-weight: 200;
-    }
-
-    .rating-wrapper {
-        color: white;
-    }
-
-    .rating-showcase {
-        color: white;
-    }
-
-    .fa-star {
-        color: white;
-    }
-
-    .rating-wrapper:hover {
-        cursor: pointer;
-    }
-
-    .rating-showcase:hover {
-        cursor: pointer;
-    }
-
-    .bg-red {
-        color: red;
-    }
-
-    img {
-        height: 6rem;
-    }
-
-    .contact {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .r-card {
-        position: relative;
-        width: 90%;
-        margin-top: 5rem;
-        padding: 1rem 1.8rem;
-        border-radius: .3rem;
-        color: white;
-        background-color: #5A5A5A;
-    }
-
-    .r-card p {
-        font-size: 1.3rem;
-    }
-
-    .p-img-wrapper {
-        height: 4rem;
-        border-radius: 50%;
-    }
-
-    .p-img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: translateX(-50%) translateY(-50%);
-    }
-
-    .txt-area {
-        font-size: 1rem;
-        width: 100%;
-        padding: 2rem;
-        height: 2rem;
-        color: #fff;
-        background: rgb(107, 107, 107);
-    }
-
-    .txt-area::placeholder {
-        color: #fff;
-    }
-
-    .r-btn {
-        padding: 1rem;
-        font-size: 1rem;
-        transition: all .3s;
-        box-shadow: none;
-    }
-
-    .r-btn:hover {
-        box-shadow: none;
-        background-color: rgb(47, 47, 47);
-
-    }
-</style>
 
 <div class="container">
 
@@ -134,42 +62,22 @@
         </div>
         <div class="col-3 text-right contact">
 
-            <!-- <div class="rating-showcase">
-                {% if review %}
-                {% for i in range(5) %}
-                {% if i < book_info.rating_star %} <span id="{{i + 1}}" class="fa fa-star bg-red"></span>
-                    {% else %}
-                    <span id="{{i + 1}}" class="fa fa-star "></span>
-                    {% endif %}
-                    {% endfor %}
-                    <h4 class="text-left d-inline-block ml-3 rating-average">{{book_info.rating}}</h4>
-                    {% else%}
-                    {% for i in range(5) %}
-                    <span class="fa fa-star "></span>
-                    {% endfor %}
-                    <h4 class="text-left d-inline-block ml-3 rating-average">0</h4>
-                {% endif %}
-
-            </div>  -->
             <div class="rating-showcase">
                 {% if rating %}
                 {% for i in range(5) %}
-                {% if i < rating.star_rating %} <span id="{{i + 1}}" class="fa fa-star bg-red"></span>
+                {% if i < rating.star_rating %} <span style="font-size: 1.5rem;" id="{{i + 1}}" class="fa fa-star bg-red"></span>
                     {% else %}
-                    <span id="{{i + 1}}" class="fa fa-star "></span>
+                    <span style="font-size: 1.5rem;" id="{{i + 1}}" class="fa fa-star "></span>
                     {% endif %}
                     {% endfor %}
                     <h4 class="text-left d-inline-block ml-3 rating-average">{{rating.avg_rating}}</h4>
                     {% else %}
                     {% for i in range(5) %}
-                    <span class="fa fa-star "></span>
+                    <span style="font-size: 1.5rem;" class="fa fa-star "></span>
                     {% endfor %}
                     <h4 class="text-left d-inline-block ml-3 rating-average">0</h4>
                     {% endif%}
             </div>
-            <!-- <span id="3" class="fa fa-star bg-red"></span>
-            <span id="4" class="fa fa-star"></span>
-            <span id="5" class="fa fa-star"></span> -->
         </div>
     </div>
 
@@ -306,88 +214,18 @@
 
     </div>
     <hr class="bg-white">
-    <style>
-        .bg-rate {
-            width: 60%;
-            font-size: 1rem;
-            background: rgb(100, 99, 99);
-        }
 
-        /* Three column layout */
-        .side {
-            float: left;
-            width: 15%;
-            margin-top: 10px;
-        }
-
-        .middle {
-            margin-top: 10px;
-            float: left;
-            width: 70%;
-        }
-
-        /* Place text to the right */
-        .right {
-            text-align: right;
-        }
-
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        /* The bar container */
-        .bar-container {
-            width: 100%;
-            background-color: #e7e7e7;
-            text-align: center;
-            color: white;
-        }
-
-        /* Individual bars */
-        .bar-5 {
-            width: 0%;
-            height: 18px;
-            background-color: #4CAF50;
-        }
-
-        .bar-4 {
-            width: 0%;
-            height: 18px;
-            background-color: #2196F3;
-        }
-
-        .bar-3 {
-            width: 0%;
-            height: 18px;
-            background-color: #00bcd4;
-        }
-
-        .bar-2 {
-            width: 0%;
-            height: 18px;
-            background-color: #ff9800;
-        }
-
-        .bar-1 {
-            width: 0%;
-            height: 18px;
-            background-color: #f44336;
-        }
-    </style>
 
     {% if has_not_submitted %}
 
     <h2 class="text-white my-4">Submit A review</h2>
     <div class="w-100 mt-3">
         <div class="rating-wrapper my-4">
-            <span id="1" class="fa star fa-star" style="color: red;"></span>
-            <span id="2" class="fa star fa-star"></span>
-            <span id="3" class="fa star fa-star"></span>
-            <span id="4" class="fa star fa-star"></span>
-            <span id="5" class="fa star fa-star"></span>
+            <span style="font-size: 1.5rem;" id="1" class="fa star fa-star" style="color: red;"></span>
+            <span style="font-size: 1.5rem;" id="2" class="fa star fa-star"></span>
+            <span style="font-size: 1.5rem;" id="3" class="fa star fa-star"></span>
+            <span style="font-size: 1.5rem;" id="4" class="fa star fa-star"></span>
+            <span style="font-size: 1.5rem;" id="5" class="fa star fa-star"></span>
             <h4 class="text-left d-inline-block ml-3 rating-count">1</h4>
         </div>
         <form action="/submit-review" method="POST" class="r-form" id="r-form">
@@ -412,7 +250,7 @@
         <div class=" r-card mx-auto ">
             <div class="d-inline my-auto">
                 <div class="p-img">
-                    <img src="{{review.usr_profile }}" alt="" class="p-img-wrapper">
+                    <img src="{{review.usr_profile }}" alt="" class="p-img-wrapper avatar">
                 </div>
                 <div class="row">
                     <div class="col">
@@ -426,7 +264,7 @@
             </div>
         </div>
         {% else %}
-        <h1>No reviews yet! care to give one? </h1>
+        <h3 class="text-center m-5">No reviews yet! care to give one? </h3>
         {% endfor %}
     </div>
 
@@ -475,6 +313,10 @@
             console.log(cur)
         })
     });
+    document.querySelector("#logout-submit")
+    .addEventListener("click" , e=> {
+        document.querySelector("#logout-form").submit()
+    })
 </script>
 
 

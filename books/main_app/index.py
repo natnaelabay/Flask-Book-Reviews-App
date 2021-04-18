@@ -49,6 +49,7 @@ def search_book():
 
 @bp.route("/profile")
 @bp.route("/home")
+@bp.route("/books")
 @login_required
 def profile():
     return render_template("profile.html")

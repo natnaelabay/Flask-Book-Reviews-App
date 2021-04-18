@@ -62,3 +62,9 @@ searchForm.addEventListener("submit", (e) => {
     })
   }
 });
+
+
+document.querySelector("#logout-submit")
+.addEventListener("click" , e=> {
+    document.querySelector("#logout-form").submit()
+})
