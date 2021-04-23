@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ url_for('static' , filename = 'css/bootstrap.min.css' ) }}">
     <!-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> -->
 
+    <link rel="shortcut icon" href="{{url_for('static' , filename='images/a.png')}}" type="image/x-icon">
     <link rel="stylesheet" href="{{url_for('static' , filename = 'css/main.css')}}">
     <title> {% block title%} {% endblock%} </title>
     {% endblock %}
@@ -35,9 +36,6 @@
 
             {% block profile %}
             <ul class="nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">About us</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
                 </li>
