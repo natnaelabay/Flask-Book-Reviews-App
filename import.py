@@ -1,12 +1,12 @@
-import csv
 import os
+import csv
+from dotenv import load_dotenv
 from dotenv import  load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-
 load_dotenv()
 
-engine = create_engine("postgresql://qzjadxfelwmecy:d4228f54a1563ef1e788461270ec42608018471097a2307679f9ca9e257df0e3@ec2-54-166-167-192.compute-1.amazonaws.com:5432/d7cbvrit6dlg8g")
+engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
