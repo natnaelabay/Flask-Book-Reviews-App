@@ -16,8 +16,8 @@ from flask import flash, Flask, session, current_app, Blueprint,flash,g,redirect
 
 app = Flask(__name__)
 
-# if not os.getenv("DATABASE_URL"):
-#     raise    RuntimeError("DATABASE_URL is not set")
+if not os.getenv("DATABASE_URL"):
+    raise    RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
 
@@ -106,10 +106,6 @@ def load_logged_in_user():
         g.user = get_db().execute(
             'SELECT * FROM users where u_name = :uname;', {"uname" : username}
         ).fetchone()
-
-        print("-----------g.user---------------")
-        print(g.user)
-        print("---------------g.user---------------")
 
 @app.route('/auth/login', methods=[ "POST" , "GET"])
 @logout_required
@@ -265,15 +261,6 @@ def redirect_if_logged_in(view):
 		return view(**kwargs)
 	return wrapped_view
 
-# #  file upload
-# @app.route('/up', methods=["POST","GET"])
-# def upload():
-#     if request.method == "POST":
-#         img = request.files["img"]
-#         print(img)
-#         img.save(os.path.join(current_app.config["UPLOAD_FOLDER "],  img.filename))
-#         return "yehe"
-#     return render_template("upload.html")
 
 @app.route('/send')
 def send():
@@ -484,6 +471,7 @@ def predict_year(year):
 app.cli.add_command(execute_command)
 
 @app.route("/api/<isbn>")
+@login_required
 def send_json(isbn):
     db = get_db()
     reviews = []
