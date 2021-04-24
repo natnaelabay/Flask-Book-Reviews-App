@@ -27,8 +27,6 @@ app.config["UPLOAD_FOLDER "] = os.path.join('static' , 'images')
 
 
 Session(app)
-# postgresql://ehapzgegnhdxpf:2b3200079350667e49c21b622e95544151ee006c4b38ade6c24384103ead4a24@ec2-3-233-7-12.compute-1.amazonaws.com:5432/d78peihqqc9prm
-
 
 '''
     Database Related methods for creating te instance and tearing down the connection
