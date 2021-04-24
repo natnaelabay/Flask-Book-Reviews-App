@@ -4,7 +4,6 @@ import click
 import random
 import joblib
 import functools
-from dotenv import load_dotenv
 from utlis import utils
 from flask_session import Session
 from datetime import datetime, date
@@ -13,17 +12,15 @@ from sqlalchemy import create_engine,text
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash,generate_password_hash
 from flask import flash, Flask, session, current_app, Blueprint,flash,g,redirect,render_template,request,session,url_for,json,send_file, jsonify,abort
-load_dotenv()
+
 
 app = Flask(__name__)
 
-if not os.getenv("DATABASE_URL"):
-    raise    RuntimeError("DATABASE_URL is not set")
-
-app.secret_key = os.getenv("SECRET_KEY")
-
+# if not os.getenv("DATABASE_URL"):
+#     raise    RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
+
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["UPLOAD_FOLDER "] = os.path.join('static' , 'images')
@@ -32,13 +29,13 @@ app.config["UPLOAD_FOLDER "] = os.path.join('static' , 'images')
 Session(app)
 # postgresql://ehapzgegnhdxpf:2b3200079350667e49c21b622e95544151ee006c4b38ade6c24384103ead4a24@ec2-3-233-7-12.compute-1.amazonaws.com:5432/d78peihqqc9prm
 
+
 '''
     Database Related methods for creating te instance and tearing down the connection
 '''
 def get_db():
     if 'db' not in g:
-        # engine = create_engine("postgresql://qzjadxfelwmecy:d4228f54a1563ef1e788461270ec42608018471097a2307679f9ca9e257df0e3@ec2-54-166-167-192.compute-1.amazonaws.com:5432/d7cbvrit6dlg8g")
-        engine = create_engine(os.getenv.ge("DATABASE_URL"))
+        engine = create_engine(os.environ.get("DATABASE_URL"))
         db = scoped_session(sessionmaker(bind=engine))
         g.db = db
     return g.db
@@ -74,6 +71,8 @@ def login_required(view):
 		return view(**kwargs)
 	return wrapped_view
 
+
+
 '''
     A flask command for building the database 
 '''
@@ -108,6 +107,10 @@ def load_logged_in_user():
             'SELECT * FROM users where u_name = :uname;', {"uname" : username}
         ).fetchone()
 
+        print("-----------g.user---------------")
+        print(g.user)
+        print("---------------g.user---------------")
+
 @app.route('/auth/login', methods=[ "POST" , "GET"])
 @logout_required
 def login():
@@ -121,6 +124,7 @@ def login():
             error["errors"].append("password is required")
         elif len(password) < 6:
             error["errors"].append("password is to short")
+        # try:
         db = get_db()
         if len(error["errors"]) == 0:
             user = db.execute("SELECT * FROM users where u_name = :uname;" , {"uname" : username}).fetchone()
@@ -239,7 +243,10 @@ def register():
             else:
                 error["errors"].append("Username already in use!")
                 return render_template("home.html" ,errors=error["errors"])
-
+            # except :
+            #     error["errors"].append("Something went wrong in the server! ")
+            #     error["success"] = False
+            #     return jsonify(error)
         else:
             return render_template("home.html" ,errors=error["errors"])
     
@@ -258,7 +265,15 @@ def redirect_if_logged_in(view):
 		return view(**kwargs)
 	return wrapped_view
 
-
+# #  file upload
+# @app.route('/up', methods=["POST","GET"])
+# def upload():
+#     if request.method == "POST":
+#         img = request.files["img"]
+#         print(img)
+#         img.save(os.path.join(current_app.config["UPLOAD_FOLDER "],  img.filename))
+#         return "yehe"
+#     return render_template("upload.html")
 
 @app.route('/send')
 def send():
@@ -373,6 +388,7 @@ def getbookpage(isbn):
                 "rate_count" : r[5], 
                 "rate_desc" : r[6]
             }
+            # total_rating += r[5]
             total_rows += 1
             rate_value = r[5]
             if rate_value == 1:
@@ -405,13 +421,11 @@ def getbookpage(isbn):
 
         try:
             import requests
-            res = requests.get("https://www.goodreads.com/book/review_counts.json", params={ "isbns": isbn})
+            res = requests.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key=AIzaSyCq4YjdyQSiKxGoovJVNnwWdCfaXYNJQpo")
             res = res.json()
-            if 'books' in res:
-                if len(res["books"]) != 0:
-                    if "average_rating" in res["books"][0] and "ratings_count" in res["books"][0]:
-                        rating_api = res["books"][0]["average_rating"]
-                        good_reads_rate_count = res["books"][0]["ratings_count"]
+            if res["totalItems"] != 0:
+                        rating_api = res["items"][0]["volumeInfo"]["averageRating"]
+                        good_reads_rate_count = res["items"][0]["volumeInfo"]["ratingsCount"]
         except:
             pass
         
@@ -424,13 +438,12 @@ def getbookpage(isbn):
         good_reads_rate_count = None
         try:
             import requests
-            res = requests.get("https://www.goodreads.com/book/review_counts.json", params={ "isbns": isbn})
+            res = requests.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key=AIzaSyCq4YjdyQSiKxGoovJVNnwWdCfaXYNJQpo")
             res = res.json()
-            if 'books' in res:
-                if len(res["books"]) != 0:
-                    if "average_rating" in res["books"][0] and "ratings_count" in res["books"][0]:
-                        rating_api = res["books"][0]["average_rating"]
-                        good_reads_rate_count = res["books"][0]["ratings_count"]
+
+            if res["totalItems"] != 0:
+                        rating_api = res["items"][0]["volumeInfo"]["averageRating"]
+                        good_reads_rate_count = res["items"][0]["volumeInfo"]["ratingsCount"]
         except:
             pass
         good_reads = {}
@@ -476,6 +489,7 @@ def send_json(isbn):
     reviews = []
     book = db.execute("SELECT * FROM Books where  isbn  = :book_id", {"book_id" : isbn.strip()}).fetchone()
     if not book:
+        # return jsonify({"message" : "Book Not found"}),404
         return abort(404)
     reviews = db.execute(
         "SELECT USERS.f_name,USERS.l_name,USERS.u_name , USERS.profile_url, REVIEWS.book_id, REVIEWS.rate_count,REVIEWS.rate_desc  FROM USERS INNER JOIN REVIEWS ON USERS.u_name = REVIEWS.usr_id where  REVIEWS.book_id =  :isbn ;", {"isbn" : isbn.strip()}).fetchall()

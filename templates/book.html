@@ -14,18 +14,14 @@
 {% block profile %}
 <ul class="nav justify-content-end">
     <li class="nav-item">
-        <div class="row">
-            <div class="col-2">
-                <img class="profile-avatar avatar" src="{{  session.profile_url  }}" alt="">
-            </div>
-            <div class="col justify-content-center d-flex flex-column">
-                <a class="nav-link d-inline-block active" href="#">{{ session.name }}</a>
-            </div>
-        </div>
+        <img class="profile-avatar avatar" src="{{  session.profile_url  }}" alt="">
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d-inline-block active" href="{{url_for('profile')}}">{{ session.name }}</a>
     </li>
     <li class="nav-item">
         <div class="d-flex flex-column justify-content-center">
-            <form action="{{ url_for('auth.logout')  }}" id="logout-form" class="d-inline-block">
+            <form action="{{ url_for('logout')  }}" id="logout-form" class="d-inline-block">
                 <a class="nav-link" id="logout-submit" href="#" data-toggle="modal" data-target="#loginModal">Logout</a>
             </form>
         </div>
@@ -50,12 +46,7 @@
                 <div class="text-white ml-n5  col-8 contact">
                     <h1>{{ book_info.title }}</h1>
                     <div class="row">
-                        <div class="col-6" style="font-size: 1rem;">
-                            <p>By: {{ book_info.author }}</p>
-                        </div>
-                        <div class="ml-n5 col-4" style="font-size: 1rem;">
-                            <p>pub date: {{ book_info.year }}</p>
-                        </div>
+                        <p>By {{ book_info.author }} || {{ book_info.year }} || {{ book_info.isbn }} </p>
                     </div>
                 </div>
             </div>
@@ -88,8 +79,9 @@
             <p style="font-size: 1.2rem;">Total Ratings:
                 {%if rating %}{{rating.total_count}}{% else %}0{% endif %}
             </p>
-            <p style="font-size: 1.2rem;">Average Rating from API:
-                {%if rating %}{{rating.api_avg}}{% else %}No data from API{% endif %}
+            <p style="font-size: 1.2rem;">API avg:
+                {%if good_reads.api_avg %}{{good_reads.api_avg}}{% else %}[No Avg]{% endif %} ||
+                {%if good_reads.api_rate_count %}{{good_reads.api_rate_count}} rates {% else %}[No rates]{% endif %}
             </p>
         </div>
         {% if rating %}

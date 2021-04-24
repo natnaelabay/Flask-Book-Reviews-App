@@ -11,18 +11,15 @@
 {% block profile %}
 <ul class="nav justify-content-end">
     <li class="nav-item">
-        <div class="row">
-            <div class="col-2">
-                <img class = "profile-avatar" src="{{  session.profile_url  }}" alt="">
-            </div>
-            <div class="col">
-                <a class="nav-link active" href="#">{{ session.name }}</a>
-            </div>
-        </div>
+        <img class="profile-avatar" src="{{  session.profile_url  }}" alt="">
     </li>
     <li class="nav-item">
-        <form action="{{ url_for('auth.logout')  }}" id = "logout-form">
-            <a class="nav-link" type="submit" id="logout-submit"  data-toggle="modal" data-target="#loginModal">Logout</a>
+        <a class="nav-link active" href="#">{{ session.name }}</a>
+    </li>
+    <li class="nav-item right-side">
+        <form action="{{ url_for('logout')  }}" id="logout-form">
+            <a class="nav-link" onclick="document.getElementById('logout-form').submit();" type="submit"
+                id="logout-submit" data-toggle="modal" data-target="#loginModal">Logout</a>
         </form>
     </li>
 
@@ -34,47 +31,35 @@
 
 
 {% if session.profile_url %}
-    <!-- <img src="{{ session.profile_url }}" alt=""> -->
+<!-- <img src="{{ session.profile_url }}" alt=""> -->
 {% else %}
-<h1 style = "text-transform: capitalize;">No Profile image</h1>
-{% endif  %}
+<h1 style="text-transform: capitalize;">No Profile image</h1>
+{% endif %}
 
 <div class="container mb-n4">
     <h1 style="font-family: Poppins; font-weight: 200;">
-        Recommendation:
+        You might like these:
     </h1>
 </div>
 <div class="container d-flex justify-content-around">
-    <div class="r-card">
-        <h1>Fikr Eske Enklf</h1>
-        <p class="">By. Natnael Abay</p>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star"></span>
-        <span class="fa fa-star"></span>
-        <span class="float-right">1984</span>
+    <div class="row d-flex justify-content-between">
+        <div class="col-md">
+            {% for book in recommend%}
+            <div class="r-card d-inline-block ">
+                <a href="/book-review/{{book.isbn}}">
+                    <h5>{{ book.title }}</h5>
+                </a>
+                <p class="">By.{{ book.author}}</p>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="float-right">{{book.year}}</span>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    <div class="r-card">
-        <h1>Fikr Eske Enklf</h1>
-        <p class="">By. Natnael Abay</p>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star"></span>
-        <span class="fa fa-star"></span>
-        <span class="float-right">1984</span>
-    </div>
-    <div class="r-card">
-        <h1>Fikr Eske Enklf</h1>
-        <p class="">By. Natnael Abay</p>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star"></span>
-        <span class="fa fa-star"></span>
-        <span class="float-right">1984</span>
-    </div>
+
 </div>
 
 <div class="container">
@@ -83,16 +68,10 @@
     </h1>
 </div>
 <section class="search container">
-    <form  id="search-form">
+    <form id="search-form" action="{{ url_for('search_book')}}">
         <i class="fas fa-search"></i>
-        <input type="text" name="payload" class="" placeholder="Search" id="payload">
-        <select name="type"id = "search-type" >
-            <option value="ISBN">ISBN</option>
-            <option value="author">Author</option>
-            <option value="title">Title</option>
-            <option value="year">Year</option>
-          </select>
-        <input type="submit" value="Search" class="ml-4 search-btn">
+        <input type="text" name="payload" required class="" placeholder="Search" id="payload">
+        <input type="submit" value="Search" class="ml-4  search-btn p-3 btn-primary">
     </form>
     <br>
     <br>
@@ -101,42 +80,68 @@
 
 
 <div class="container  max-height search-content">
-    <!-- Loading Spinner should be added if api used  -->
+    {% if search_result %}
+    {% for book in search_result %}
+    <a href="/book-review/{{book.isbn}}">
+        <div class="search-box mt-3" style="position: relative;">
+            <div class="left">
+                <img src="static/images/a.png" class="book-img" alt="">
+            </div>
+            <div class="middle">
+                <p>{{book.title}}</p>
+            </div>
+            <div class="right">
+                <p>By. <span>{{book.author}}</span></p>
+            </div>
+        </div>
+        <input name="book_id" type="text" class="d-none" value="{{book.isbn}}" />
+    </a>
+    {% endfor %}
+    {% else %}
+    {% if searched%}
+    <h1>Nothing found</h1>
+    {%else%}
     <div class="search-svg-wrapper">
         <img height="450" class="image-responsive" src="{{ url_for('static', filename='images/search.svg')  }}" alt="">
     </div>
+    {% endif %}
+    {% endif %}
+
+
 </div>
 
 
 
 <style>
-.max-height {
-    margin-bottom: 5rem;
-    height: 35rem;
-    width: 100%;
-    position: relative;;
-}
-.search-svg-wrapper {
-    z-index: -1;
-    position:absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-}
+    .max-height {
+        margin-bottom: 5rem;
+        height: 35rem;
+        width: 100%;
+        position: relative;
+        ;
+    }
 
-.profile-avatar {
+    .search-svg-wrapper {
+        z-index: -1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
 
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-}
-a:hover {
-    text-decoration: none;
-}
+    .profile-avatar {
 
+        height: 3rem;
+        width: 3rem;
+        border-radius: 50%;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
 </style>
 
 
-<script src="{{ url_for('static' , filename='js/profile.js')  }}"></script>
+<!-- <script src="{{ url_for('static' , filename='js/profile.js')  }}"></script> -->
 
 {% endblock %}
