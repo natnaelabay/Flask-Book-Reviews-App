@@ -129,7 +129,7 @@ def login():
             if check_password_hash(user["password"],password):
                 session.clear()
                 if user["profile_url"] is not None:
-                    img_url = user['profile_url'].split('\\')[2]
+                    img_url = user['profile_url'].split('\\')[-1]
                     img_ext =img_url[img_url.index(".")+ 1 :]
                     session["profile_url"] = url_for("static" , filename = f"images/{user['u_name'] + '.' + img_ext}")
                 else:
